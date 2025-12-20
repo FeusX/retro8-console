@@ -16,6 +16,8 @@
 
 static i2c_master_dev_handle_t dev_handle;
 
+static uint8_t vram[1024];
+
 static inline esp_err_t ssd1306_send_command(uint8_t cmd)
 {
   uint8_t buffer[2] = {0x00, cmd};
@@ -44,9 +46,51 @@ static inline void ssd1306_init(void)
 
   // wake the screen
   ssd1306_send_command(SSD1306_CMD_DISPLAY_OFF);
+  ssd1306_send_command(0x20); // Set Memory Addressing Mode
+  ssd1306_send_command(0x00); // 00 = Horizontal Addressing Mode
+
+  ssd1306_send_command(0x21); // Set Column Address
+  ssd1306_send_command(0);    // Start at 0
+  ssd1306_send_command(127);  // End at 127
+
+  ssd1306_send_command(0x22); // Set Page Address
+  ssd1306_send_command(0);    // Start at 0
+  ssd1306_send_command(7);
   ssd1306_send_command(SSD1306_CMD_CHARGE_PUMP);
   ssd1306_send_command(0x14); 
   ssd1306_send_command(SSD1306_CMD_DISPLAY_ON);
+}
+
+static inline void ssd1306_clear(void)
+{
+  for(int i = 0; i < 1024; i++)
+  { vram[i] = 0x00; }
+}
+
+static inline void ssd1306_draw_pixel(uint8_t x, uint8_t y, bool on)
+{ 
+  if(x >= 128 || y >= 64) return;
+
+  if(on)
+  { vram[x + (y / 8) * 128] |= (1 << (y % 8)); }
+  else
+  { vram[x + (y / 8) * 128] &= ~(1 << (y % 8)); }
+}
+
+static inline void ssd1306_update(void)
+{
+  // set column addr range to (0 to 127)
+  ssd1306_send_command(0x21); ssd1306_send_command(0); ssd1306_send_command(127);
+
+  // set page addr range (0 to 7)
+  ssd1306_send_command(0x22); ssd1306_send_command(0); ssd1306_send_command(7);
+
+  uint8_t data_pkg[1025];
+  data_pkg[0] = 0x40;
+  for(int i = 0; i < 1024; i++)
+  { data_pkg[i + 1] = vram[i]; }
+
+  i2c_master_transmit(dev_handle, data_pkg, sizeof(data_pkg), -1);
 }
 
 #endif
