@@ -93,14 +93,26 @@ static inline void ssd1306_update(void)
   i2c_master_transmit(dev_handle, data_pkg, sizeof(data_pkg), -1);
 }
 
-static inline void ssd1306_draw_sprite(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *bitmap)
+static inline void draw_sprite_v(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *bitmap)
 {
-  for(int i = 0; i < w; i++)
+	for(int i = 0; i < w; i++)
+	{
+		for(int j = 0; j < h; j++)
+		{
+			if(bitmap[i + (j / 8) * w] & (1 << (j % 8)))
+			{ ssd1306_draw_pixel(x + i, y + j, true); }
+		}
+	}
+}
+
+static inline void draw_sprite_h(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *bitmap)
+{
+  for(int i = 0; i < h; i++)
   {
-    for(int j = 0; j < h; j++)
+    for(int j = 0; j < w; j++)
     {
-      if(bitmap[i + (j / 8) * w] & (1 << (j % 8)))
-      { ssd1306_draw_pixel(x + i, y + j, true); }
+      if(bitmap[i] & (0x80 >> j))
+      { ssd1306_draw_pixel(x + j, y + i, true); }
     }
   }
 }
