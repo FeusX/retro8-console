@@ -4,6 +4,8 @@
 #include "driver/i2c_master.h"
 #include "esp_log.h"
 
+#define CLAMP(x, low, high) (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
+
 #define I2C_PORT            0
 #define SDA_GPIO            21
 #define SCL_GPIO            22
