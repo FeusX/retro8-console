@@ -4,9 +4,9 @@
 #include "driver/gpio.h"
 
 #define BTN_UP 12
-#define BTN_DOWN 13
-#define BTN_LEFT 14
-#define BTN_RIGHT 27
+#define BTN_DOWN 27
+#define BTN_LEFT 13
+#define BTN_RIGHT 14
 #define BTN_A 26
 #define BTN_B 25
 
