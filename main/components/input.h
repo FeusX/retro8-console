@@ -15,7 +15,7 @@ static inline void inputs_init()
   gpio_config_t io_conf = {
     .intr_type = GPIO_INTR_DISABLE,
     .mode = GPIO_MODE_INPUT,
-    .pin_bit_mask = (1UL << BTN_UP) | (1ULL << BTN_DOWN) | (1ULL << BTN_LEFT)
+    .pin_bit_mask = (1ULL << BTN_UP) | (1ULL << BTN_DOWN) | (1ULL << BTN_LEFT)
                     | (1ULL << BTN_RIGHT) | (1ULL << BTN_A) | (1ULL << BTN_B),
     .pull_down_en = 0,
     .pull_up_en = 1
