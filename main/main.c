@@ -47,12 +47,11 @@ void app_main(void)
 
   while(1)
   {
-    for(int i = 0x20; i <= 0x5A; i++)
-    {
-      ssd1306_clear();
-      draw_char(50, 20, (char)i);
-      ssd1306_update();
-      vTaskDelay(pdMS_TO_TICKS(500));   
-    }
+    ssd1306_clear();
+
+    draw_string(0, 0, "--- SPACE GAME ---");
+
+    ssd1306_update();
+    vTaskDelay(pdMS_TO_TICKS(2000));
   }
 }

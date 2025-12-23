@@ -78,4 +78,15 @@ static inline void draw_char(int16_t x, int16_t y, char c)
   draw_sprite_v(x, y, 5, 8, font[(uint8_t)c]);
 }
 
+static inline void draw_string(int16_t x, int16_t y, const char *str)
+{
+  while(*str)
+  {
+    draw_char(x, y, *str);
+    x += 6;
+    str++;
+    if(x > 122) break;
+  }
+}
+
 #endif
