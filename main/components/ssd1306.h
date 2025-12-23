@@ -48,15 +48,15 @@ static inline void ssd1306_init(void)
 
   // wake the screen
   ssd1306_send_command(SSD1306_CMD_DISPLAY_OFF);
-  ssd1306_send_command(0x20); // Set Memory Addressing Mode
-  ssd1306_send_command(0x00); // 00 = Horizontal Addressing Mode
+  ssd1306_send_command(0x20); 
+  ssd1306_send_command(0x00); 
 
-  ssd1306_send_command(0x21); // Set Column Address
-  ssd1306_send_command(0);    // Start at 0
-  ssd1306_send_command(127);  // End at 127
+  ssd1306_send_command(0x21); 
+  ssd1306_send_command(0);   
+  ssd1306_send_command(127); 
 
-  ssd1306_send_command(0x22); // Set Page Address
-  ssd1306_send_command(0);    // Start at 0
+  ssd1306_send_command(0x22); 
+  ssd1306_send_command(0);    
   ssd1306_send_command(7);
   ssd1306_send_command(SSD1306_CMD_CHARGE_PUMP);
   ssd1306_send_command(0x14); 
@@ -102,7 +102,7 @@ static inline void draw_sprite_v(int16_t x, int16_t y, int16_t w, int16_t h, con
 		for(int j = 0; j < h; j++)
 		{
 			if(bitmap[i + (j / 8) * w] & (1 << (j % 8)))
-			{ ssd1306_draw_pixel(x + i, y + j, true); }
+			{ ssd1306_draw_pixel(x + w - 1 - i, y + 7 - j, true); }
 		}
 	}
 }

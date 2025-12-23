@@ -4,6 +4,7 @@
 #include "components/ssd1306.h"
 #include "components/bootloader.h"
 #include "components/input.h"
+#include "components/font.h"
 
 void app_main(void)
 {
@@ -11,7 +12,7 @@ void app_main(void)
   ssd1306_init();
   inputs_init();
 
-  int alien_x = 50;
+  /*int alien_x = 50;
   int alien_y = 20;
 
   static const uint8_t invader_left[] = {
@@ -42,5 +43,16 @@ void app_main(void)
 		ssd1306_update();
 
 		vTaskDelay(pdMS_TO_TICKS(20));
+  }*/
+
+  while(1)
+  {
+    for(int i = 0x20; i <= 0x5A; i++)
+    {
+      ssd1306_clear();
+      draw_char(50, 20, (char)i);
+      ssd1306_update();
+      vTaskDelay(pdMS_TO_TICKS(500));   
+    }
   }
 }
