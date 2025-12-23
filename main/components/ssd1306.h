@@ -51,6 +51,9 @@ static inline void ssd1306_init(void)
   ssd1306_send_command(0x20); 
   ssd1306_send_command(0x00); 
 
+  ssd1306_send_command(0xA1);
+  ssd1306_send_command(0xC8);
+  
   ssd1306_send_command(0x21); 
   ssd1306_send_command(0);   
   ssd1306_send_command(127); 
@@ -102,7 +105,7 @@ static inline void draw_sprite_v(int16_t x, int16_t y, int16_t w, int16_t h, con
 		for(int j = 0; j < h; j++)
 		{
 			if(bitmap[i + (j / 8) * w] & (1 << (j % 8)))
-			{ ssd1306_draw_pixel(x + w - 1 - i, y + 7 - j, true); }
+			{ ssd1306_draw_pixel(x + i, y + j, true); }
 		}
 	}
 }
