@@ -12,7 +12,7 @@ void app_main(void)
   ssd1306_init();
   inputs_init();
 
-  /*int alien_x = 50;
+  int alien_x = 50;
   int alien_y = 20;
 
   static const uint8_t invader_left[] = {
@@ -39,19 +39,10 @@ void app_main(void)
 
 		draw_sprite_h(alien_x, alien_y, 8, 16, invader_left);
 		draw_sprite_h(alien_x + 8, alien_y, 8, 16, invader_right);
+		draw_string(0, 0, "--- SPACE GAME ---");
 
 		ssd1306_update();
 
 		vTaskDelay(pdMS_TO_TICKS(20));
-  }*/
-
-  while(1)
-  {
-    ssd1306_clear();
-
-    draw_string(0, 0, "--- SPACE GAME ---");
-
-    ssd1306_update();
-    vTaskDelay(pdMS_TO_TICKS(2000));
   }
 }

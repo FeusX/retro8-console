@@ -26,7 +26,7 @@ static inline void inputs_init()
 
 static inline bool is_pressed(int btn_pin)
 {
-  return gpio_get_level(btn_pin) == 1;
+  return gpio_get_level(btn_pin) == 0;
 }
 
 #endif
