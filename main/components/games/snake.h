@@ -19,11 +19,30 @@ static pos_t food = {10, 5};
 static int8_t snake_len = 3;
 static int8_t dir = 3;
 static uint8_t frame_skip = 0;
+static uint8_t apples = 0;
+static bool active = false;
 
 static inline void run_snake(void)
 {
+  if(!active)
+  {
+    snake_len = 3;
+    apples = 0;
+    dir = 3;
+
+    snake[0].x = 10; snake[0].y = 5;
+    snake[1].x = 9;  snake[1].y = 5;
+    snake[2].x = 8;  snake[2].y = 5;
+
+    active = true;
+  }
+  
   ssd1306_clear();
   draw_string(5, 0, "--- SNAKE GAME ---");
+
+  char score_str[16];
+  sprintf(score_str, "SCORE: %d", apples);
+  draw_string(30, 55, score_str);
 
   if(frame_skip++ > 5)
   {
@@ -42,15 +61,29 @@ static inline void run_snake(void)
     // wrap
     if(snake[0].x < 0)  snake[0].x = 31;
     if(snake[0].x > 31) snake[0].x = 0;
-    if(snake[0].y < 3)  snake[0].y = 14;
-    if(snake[0].y > 14) snake[0].y = 3;
+    if(snake[0].y < 3)  snake[0].y = 13;
+    if(snake[0].y > 13) snake[0].y = 3;
 
     // food collision
     if(snake[0].x == food.x && snake[0].y == food.y)
     {
       if(snake_len < MAX_LENGTH) snake_len++;
       food.x = rand() % 32;
-      food.y = 2 + (rand() % 14);
+      food.y = 3 + (rand() % 11);
+    }
+
+    for(int i = 1; i < snake_len; i++)
+    {
+      if(snake[0].x == snake[i].x && snake[0].y == snake[i].y)
+      {
+        active = false;
+        ssd1306_clear();
+        draw_string(3, 20, "GAME OVER");
+        ssd1306_update();
+        vTaskDelay(pdMS_TO_TICKS(2000));
+        current_state = STATE_MENU;
+        return;
+      }
     }
   }
 
@@ -61,13 +94,13 @@ static inline void run_snake(void)
 
   ssd1306_draw_pixel(food.x * 4 + 1, food.y * 4 + 1, 1);
 
-  for(int16_t i = 0; i < snake_len; i++)
+  for(int i = 0; i < snake_len; i++)
   {
-    int16_t px = snake[i].x * 4;
-    int16_t py = snake[i].y * 4;
-    for(int16_t w = 0; w < 3; w++)
+    int px = snake[i].x * 4;
+    int py = snake[i].y * 4;
+    for(int w = 0; w < 3; w++)
     {
-      for(int16_t h = 0; h < 3; h++)
+      for(int h = 0; h < 3; h++)
       { ssd1306_draw_pixel(px + w, py + h, 1); }
     }
   }
