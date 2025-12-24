@@ -8,6 +8,7 @@
 #include "components/font.h"
 #include "components/menu.h"
 #include "components/states.h"
+#include "components/games/invaders.h"
 
 system_state_t current_state = STATE_MENU;
 
@@ -25,6 +26,9 @@ void app_main(void)
     {
       case STATE_MENU:
         run_menu();
+        break;
+      case STATE_GAME_SPACE_INVADERS:
+        run_invaders();
         break;
       default:
         current_state = STATE_MENU;

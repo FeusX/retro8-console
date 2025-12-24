@@ -2,8 +2,7 @@
 #define ASSETS_H
 
 // ---- SPACE INVADERS ----
-static const uint8_t invader_mid[] = { /* you have the drawing function this is
-                                        16 pixels wide so it gets rendered properly*/
+static const uint8_t invader_mid[] = {
   // left side
   0x03, 0x0F, 0x1F, 0x33, 0x3F, 0x0F, 0x0A, 0x12,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

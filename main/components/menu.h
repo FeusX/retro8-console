@@ -31,7 +31,7 @@ static inline void run_menu(void)
   }
   last_up = current_up;
 
-  if(is_pressed(BTN_A))
+  if(is_pressed(BTN_LEFT))
   {
     if(menu_cursor == 0) current_state = STATE_GAME_SPACE_INVADERS;
     if(menu_cursor == 1) current_state = STATE_GAME_SNAKE;
