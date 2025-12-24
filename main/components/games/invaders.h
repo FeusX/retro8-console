@@ -1,7 +1,6 @@
 #ifndef INVADERS_H
 #define INVADERS_H
 
-#include <stdio.h>
 #include "../ssd1306.h"
 #include "../input.h"
 #include "../assets.h"
