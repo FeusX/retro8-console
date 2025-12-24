@@ -7,8 +7,8 @@
 #define BTN_DOWN 27
 #define BTN_LEFT 13
 #define BTN_RIGHT 14
-#define BTN_A 26
-#define BTN_B 25
+#define BTN_A 16
+#define BTN_B 17
 
 static inline void inputs_init()
 {
