@@ -44,7 +44,7 @@ static inline void run_snake(void)
   sprintf(score_str, "SCORE: %d", apples);
   draw_string(30, 55, score_str);
 
-  if(frame_skip++ > 5)
+  if(frame_skip++ > 2)
   {
     frame_skip = 0;
 
@@ -70,6 +70,7 @@ static inline void run_snake(void)
       if(snake_len < MAX_LENGTH) snake_len++;
       food.x = rand() % 32;
       food.y = 3 + (rand() % 11);
+      apples++;
     }
 
     for(int i = 1; i < snake_len; i++)
