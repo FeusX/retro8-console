@@ -8,7 +8,7 @@
 #include "components/font.h"
 #include "components/menu.h"
 #include "components/states.h"
-#include "components/games/invaders.h"
+#include "components/games/space_invaders/invaders.h"
 #include "components/games/snake.h"
 
 system_state_t current_state = STATE_MENU;
