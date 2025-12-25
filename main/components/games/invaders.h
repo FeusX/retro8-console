@@ -5,8 +5,18 @@
 #include "../input.h"
 #include "../assets.h"
 
-int16_t alien_x = 50;
-int16_t alien_y = 20;
+#define MAX_BULLETS 5
+#define ALIEN_ROWS 3
+#define ALIEN_COLS 8
+
+typedef struct {
+  float x, y;
+  bool active; 
+}; entitiy_t;
+
+static entity_t player, bullets[MAX_BULLETS], aliens[ALIEN_ROWS][ALIEN_COLS];
+static bool invaders_active = false;
+static int8_t alien_dir = 1;
 
 static inline void run_invaders(void)
 {
