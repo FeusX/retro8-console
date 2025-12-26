@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "esp_system.h"
+#include "esp_random.h"
 #include "states.h"
 #include "ssd1306.h"
 #include "input.h"
@@ -68,8 +70,8 @@ static inline void run_snake(void)
     if(snake[0].x == food.x && snake[0].y == food.y)
     {
       if(snake_len < MAX_LENGTH) snake_len++;
-      food.x = rand() % 32;
-      food.y = 3 + (rand() % 11);
+      food.x = esp_random() % 32;
+      food.y = 3 + (esp_random() % 11);
       apples++;
     }
 
