@@ -14,23 +14,13 @@ static player_t ship = {60, 3};
 
 static void update_player()
 {
-  if(is_pressed(BTN_LEFT) && ship.x > 0) ship.x -= 1.5f;
-  if(is_pressed(BTN_RIGHT) && ship.x < 120) ship.x += 1.5f;
+  if(is_pressed(BTN_LEFT) && ship.x > 0) ship.x -= 2.0f;
+  if(is_pressed(BTN_RIGHT) && ship.x < 120) ship.x += 2.0f;
 }
 
-/*static void draw_ship()
+static void draw_player()
 {
-  for(int row = 0; row < 6; row++)
-  {
-    uint16_t row_data = player_ship[row];
-    for(int col = 0; col < 13; col++)
-    {
-      if(row_data & (0x1000 >> col))
-      {
-        ssd1306_draw_pixel((int)ship.x + col, 56 + row, 1);
-      }
-    }
-  }
-}*/
+  draw_sprite_h(ship.x, 45, 16, 8, player_ship);
+}
 
 #endif
