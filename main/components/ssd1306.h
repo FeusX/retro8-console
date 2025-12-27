@@ -106,7 +106,7 @@ static inline void draw_sprite_v(int16_t x, int16_t y, int16_t w, int16_t h, con
 	{
 		for(int j = 0; j < h; j++)
 		{
-		  int byte_index = i + (j / 8) * w;
+		  int byte_index = i * bytes_per_col + (j / 8);
 		  int bit_index = j % 8; 
 			if(bitmap[byte_index] & (1 << bit_index))
 		  { ssd1306_draw_pixel(x + i, y + j, true); }
