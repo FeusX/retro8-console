@@ -17,7 +17,7 @@ int active_aliens = 0;
 
 static inline void run_invaders()
 {
-  if(!is_invaders_init)
+  /*if(!is_invaders_init)
   {
     init_aliens();
     
@@ -56,7 +56,11 @@ static inline void run_invaders()
   {
     init_aliens();
     swarm_speed += 1.0f;
-  }
+  }*/
+
+  ssd1306_clear();
+
+  draw_sprite_h(50, 20, 16, 8, player_ship);
     
   ssd1306_update();
 }

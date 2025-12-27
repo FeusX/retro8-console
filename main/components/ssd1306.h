@@ -100,23 +100,31 @@ static inline void ssd1306_update(void)
 
 static inline void draw_sprite_v(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *bitmap)
 {
+  int bytes_per_col = (h + 7) / 8;
+  
 	for(int i = 0; i < w; i++)
 	{
 		for(int j = 0; j < h; j++)
 		{
-			if(bitmap[i + (j / 8) * w] & (1 << (j % 8)))
-			{ ssd1306_draw_pixel(x + i, y + j, true); }
+		  int byte_index = i + (j / 8) * w;
+		  int bit_index = j % 8; 
+			if(bitmap[byte_index] & (1 << bit_index))
+		  { ssd1306_draw_pixel(x + i, y + j, true); }
 		}
 	}
 }
 
 static inline void draw_sprite_h(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *bitmap)
 {
+  int bytes_per_row = (w + 7) / 8;
+  
   for(int i = 0; i < h; i++)
   {
     for(int j = 0; j < w; j++)
     {
-      if(bitmap[i] & (0x80 >> j))
+      int byte_index = i * bytes_per_row + j / 8;
+      int bit_index = 7 - (j % 8);
+      if(bitmap[byte_index] & (1 << bit_index))
       { ssd1306_draw_pixel(x + j, y + i, true); }
     }
   }

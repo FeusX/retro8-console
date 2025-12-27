@@ -18,7 +18,7 @@ static void update_player()
   if(is_pressed(BTN_RIGHT) && ship.x < 120) ship.x += 1.5f;
 }
 
-static void draw_ship()
+/*static void draw_ship()
 {
   for(int row = 0; row < 6; row++)
   {
@@ -31,6 +31,6 @@ static void draw_ship()
       }
     }
   }
-}
+}*/
 
 #endif
