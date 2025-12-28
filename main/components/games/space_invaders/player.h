@@ -15,12 +15,12 @@ static player_t ship = {60, 3};
 static void update_player()
 {
   if(is_pressed(BTN_LEFT) && ship.x > 0) ship.x -= 2.0f;
-  if(is_pressed(BTN_RIGHT) && ship.x < 120) ship.x += 2.0f;
+  if(is_pressed(BTN_RIGHT) && ship.x < 112) ship.x += 2.0f;
 }
 
 static void draw_player()
 {
-  draw_sprite_h(ship.x, 45, 16, 8, player_ship);
+  draw_sprite_h(ship.x, 52, 16, 8, player_ship);
 }
 
 #endif

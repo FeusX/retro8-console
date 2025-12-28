@@ -5,7 +5,7 @@
 #include "../../input.h"
 #include "../../assets.h"
 #include "../../font.h"
-//#include "bullet.h"
+#include "bullet.h"
 //#include "alien.h"
 #include "player.h"
 
@@ -18,6 +18,11 @@ static inline void run_invaders()
   update_player();
   
   draw_player();
+
+  if(is_pressed(BTN_A)) fire_bullet(ship.x + 1, 52);
+
+  draw_bullets();
+  update_bullets();
     
   ssd1306_update();
 }
