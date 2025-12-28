@@ -19,7 +19,7 @@ void app_main(void)
   printf("Initializing SSD1306...\n");
   ssd1306_init();
   printf("SSD1306 initialized.\n");
-  printf("Initializing inputs.\n");
+  printf("Initializing inputs...\n");
   inputs_init();
   printf("Inputs initialized.\n");
 
