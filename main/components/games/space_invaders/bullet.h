@@ -1,6 +1,7 @@
 #ifndef BULLET_H
 #define BULLET_H
 
+#define FIRE_DELAY 250
 #define MAX_BULLETS 5
 
 typedef struct {
@@ -19,7 +20,20 @@ static void fire_bullet(float x, float y)
       bullets[i].x = x + 6;
       bullets[i].y = y;
       bullets[i].active = true;
+      break;
     }
+  }
+}
+
+static void handle_firing(bool fired, float x, float y)
+{
+  static uint32_t last_fire = 0;
+  uint32_t now = xTaskGetTickCount() * portTICK_PERIOD_MS;
+
+  if(fired && (now - last_fire) >= FIRE_DELAY)
+  {
+    fire_bullet(x, y);
+    last_fire = now;
   }
 }
 
@@ -42,7 +56,7 @@ static void update_bullets()
     if(bullets[i].active)
     {
       bullets[i].y -= 2.5f;
-      if(bullets[i].y < 0) bullets[i].active = false;
+      if(bullets[i].y < 8) bullets[i].active = false;
     }
   }
 }
