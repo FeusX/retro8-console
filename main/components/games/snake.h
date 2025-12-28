@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "esp_system.h"
 #include "esp_random.h"
@@ -24,7 +25,20 @@ static uint8_t frame_skip = 0;
 static uint8_t apples = 0;
 static bool active = false;
 
-static inline void run_snake(void)
+static bool food_pos_check(int8_t x, int8_t y)
+{
+  for(int i = 0; i < snake_len; i++)
+  {
+    if(snake[i].x == x && snake[i].y == y)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+static void run_snake(void)
 {
   if(!active)
   {
@@ -70,8 +84,10 @@ static inline void run_snake(void)
     if(snake[0].x == food.x && snake[0].y == food.y)
     {
       if(snake_len < MAX_LENGTH) snake_len++;
-      food.x = esp_random() % 32;
-      food.y = 3 + (esp_random() % 11);
+      do{
+        food.x = esp_random() % 32;
+        food.y = 3 + (esp_random() % 11);
+      }while(food_pos_check(food.x, food.y));
       apples++;
     }
 
