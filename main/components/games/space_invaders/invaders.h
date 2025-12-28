@@ -7,9 +7,13 @@
 #include "../../font.h"
 #include "bullet.h"
 #include "player.h"
+#include "alien.h"
 
-static inline void run_invaders()
+static bool aliens_init = false;
+
+static inline void run_invaders(void)
 {
+  if(!aliens_init) init_aliens();
   ssd1306_clear();
 
   draw_string(3, 0, "-- SPACE INVADERS --");
@@ -22,6 +26,7 @@ static inline void run_invaders()
 
   draw_bullets();
   update_bullets();
+  draw_aliens();
     
   ssd1306_update();
 }

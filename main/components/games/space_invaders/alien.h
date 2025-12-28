@@ -1,76 +1,63 @@
 #ifndef ALIEN_H
 #define ALIEN_H
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
 #include "../../ssd1306.h"
 #include "../../assets.h"
 
 #define ALIEN_ROWS 3
-#define ALIEN_COLS 8
+#define ALIEN_COLS 5
+#define MAX_ALIENS (ALIEN_ROWS * ALIEN_COLS)
+
+#define ALIEN_HEIGHT 8
+#define ALIEN_WIDTH 8
 
 typedef struct {
-  float x, y;
-  bool active;
+  int8_t x, y;
+  bool alive;
 } alien_t;
 
-static alien_t swarm[ALIEN_ROWS][ALIEN_COLS];
-static int8_t swarm_dir = 1;
-static float swarm_speed = 0.06f;
+static alien_t aliens[MAX_ALIENS];
 
-static void init_aliens()
+static int8_t horde_x, horde_y, horde_dir;
+
+static TickType_t step_delay;
+static TickType_t last_step_time;
+
+static void init_aliens(void)
 {
+  int i = 0;
   for(int r = 0; r < ALIEN_ROWS; r++)
   {
     for(int c = 0; c < ALIEN_COLS; c++)
     {
-      swarm[r][c].x = c * 14 + 10;
-      swarm[r][c].y = r * 10 + 10;
-      swarm[r][c].active = true;
+      aliens[i].x = c * (ALIEN_WIDTH + 4);
+      aliens[i].y = r * (ALIEN_HEIGHT + 4);
+      aliens[i].alive = true;
+      i++;
     }
   }
+
+  horde_x = 8;
+  horde_y = 16;
+  horde_dir = 1;
+
+  step_delay = pdMS_TO_TICKS(600);
+  last_step_time = xTaskGetTickCount();
 }
 
-static void draw_alien(int x, int y)
+static void draw_aliens(void)
 {
-  for(int row = 0; row < ALIEN_ROWS; row++)
+  for(int i = 0; i < MAX_ALIENS; i++)
   {
-    uint8_t row_data = invader_small[row];
-    for(int col = 0; col < 8; col++)
-    {
-      if(row_data & (0x80 >> col))
-      {
-        ssd1306_draw_pixel(x + col, y + row, 1);
-      }
-    }
-  }
-}
+    if(!aliens[i].alive) continue;
 
-static void update_aliens()
-{
-  bool hit_edge = false;
+    int x = horde_x + aliens[i].x + 5;
+    int y = horde_y + aliens[i].y;
 
-  for(int r = 0; r < ALIEN_ROWS; r++)
-  {
-    for(int c = 0; c < ALIEN_COLS; c++)
-    {
-      if(swarm[r][c].active)
-      {
-        swarm[r][c].x += (swarm_dir * swarm_speed);
-        if(swarm[r][c].x > 120 || swarm[r][c].x < 0)
-        { hit_edge = true; }
-      }
-    }
-  }
-
-  if(hit_edge)
-  {
-    swarm_dir *= -1;
-    for (int r = 0; r < ALIEN_ROWS; r++)
-    {
-      for (int c = 0; c < ALIEN_COLS; c++)
-      {
-        swarm[r][c].y += 4; // Shift down
-      }
-    }
+    draw_sprite_h(x, y, 8, 8, invader_small);
   }
 }
 
