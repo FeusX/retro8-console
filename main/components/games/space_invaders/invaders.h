@@ -13,19 +13,20 @@ static bool aliens_init = false;
 
 static inline void run_invaders(void)
 {
-  if(!aliens_init) init_aliens();
+  if(!aliens_init) { init_aliens(); aliens_init = true; }
   ssd1306_clear();
 
   draw_string(3, 0, "-- SPACE INVADERS --");
 
   update_player();
-  
-  draw_player();
-
   handle_firing(is_pressed(BTN_A), ship.x + 1, 52);
-
-  draw_bullets();
+  
   update_bullets();
+  update_aliens();
+  bullet_collision();
+
+  draw_player();
+  draw_bullets();
   draw_aliens();
     
   ssd1306_update();

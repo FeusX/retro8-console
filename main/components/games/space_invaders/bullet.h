@@ -43,8 +43,8 @@ static void draw_bullets()
   {
     if(bullets[i].active)
     {
-      ssd1306_draw_pixel((int)bullets[i].x, (int)bullets[i].y, 1);
-      ssd1306_draw_pixel((int)bullets[i].x, (int)bullets[i].y + 1, 1);
+      ssd1306_draw_pixel((int)bullets[i].x + 1, (int)bullets[i].y, 1);
+      ssd1306_draw_pixel((int)bullets[i].x + 1, (int)bullets[i].y + 1, 1);
     }
   }  
 }
@@ -59,6 +59,17 @@ static void update_bullets()
       if(bullets[i].y < 8) bullets[i].active = false;
     }
   }
+}
+
+static inline bool aabb_overlap(
+  int ax, int ay, int aw, int ah,
+  int bx, int by, int bw, int bh
+)
+{
+  return !(ax + aw <= bx ||
+           ax >= bx + bw ||
+           ay + ah <= by ||
+           ay >= by + bh);
 }
 
 #endif

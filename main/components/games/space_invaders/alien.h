@@ -6,6 +6,7 @@
 
 #include "../../ssd1306.h"
 #include "../../assets.h"
+#include "bullet.h"
 
 #define ALIEN_ROWS 3
 #define ALIEN_COLS 5
@@ -54,11 +55,76 @@ static void draw_aliens(void)
   {
     if(!aliens[i].alive) continue;
 
-    int x = horde_x + aliens[i].x + 5;
+    int x = horde_x + aliens[i].x;
     int y = horde_y + aliens[i].y;
 
     draw_sprite_h(x, y, 8, 8, invader_small);
   }
 }
+
+static void bullet_collision(void)
+{
+  for(int b = 0; b < MAX_BULLETS; b++)
+  {
+    if(!bullets[b].active) continue;
+
+    int bx = (int)bullets[b].x;
+    int by = (int)bullets[b].y;
+
+    for(int a = 0; a < MAX_ALIENS; a++)
+    {
+      if(!aliens[a].alive) continue;
+
+      int ax = horde_x + aliens[a].x;
+      int ay = horde_y + aliens[a].y;
+
+      if(aabb_overlap(bx, by, 1, 2, ax, ay, ALIEN_WIDTH, ALIEN_HEIGHT))
+      {
+        bullets[b].active = false;
+        aliens[a].alive = false;
+        return;
+      }
+    }
+  }
+}
+
+static void alien_bounds(int *left, int *right)
+{
+  *left = 127;
+  *right = 0;
+
+  for(int i = 0; i < MAX_ALIENS; i++)
+  {
+    if(!aliens[i].alive) continue;
+
+    int x = aliens[i].x;
+    if(x < *left) *left = x;
+    if(x > *right) *right = x;
+  }
+}
+
+static void update_aliens(void)
+{
+  TickType_t now = xTaskGetTickCount();
+
+  if(now - last_step_time < step_delay)
+    return;
+
+  last_step_time = now;
+
+  int left, right;
+  alien_bounds(&left, &right);
+
+  bool edge_hit = (horde_x + right + ALIEN_WIDTH >= 128 && horde_dir > 0) || (horde_x + left <= 0 && horde_dir < 0);
+
+  if(edge_hit)
+  {
+    horde_dir = -horde_dir;
+  }
+  else
+  {
+    horde_x += horde_dir * 4;
+  }
+} 
 
 #endif
