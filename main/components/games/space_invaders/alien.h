@@ -9,7 +9,7 @@
 #include "bullet.h"
 
 #define ALIEN_ROWS 3
-#define ALIEN_COLS 5
+#define ALIEN_COLS 4
 #define MAX_ALIENS (ALIEN_ROWS * ALIEN_COLS)
 
 #define ALIEN_HEIGHT 8
@@ -24,8 +24,12 @@ static alien_t aliens[MAX_ALIENS];
 
 static int8_t horde_x, horde_y, horde_dir;
 
+static int8_t horde_speed = 3;
+
 static TickType_t step_delay;
 static TickType_t last_step_time;
+
+static int8_t aliens_alive = 12;
 
 static void init_aliens(void)
 {
@@ -34,8 +38,8 @@ static void init_aliens(void)
   {
     for(int c = 0; c < ALIEN_COLS; c++)
     {
-      aliens[i].x = c * (ALIEN_WIDTH + 4);
-      aliens[i].y = r * (ALIEN_HEIGHT + 4);
+      aliens[i].x = c * (ALIEN_WIDTH + 5);
+      aliens[i].y = r * (ALIEN_HEIGHT + 5);
       aliens[i].alive = true;
       i++;
     }
@@ -82,6 +86,7 @@ static void bullet_collision(void)
       {
         bullets[b].active = false;
         aliens[a].alive = false;
+        aliens_alive--;
         return;
       }
     }
@@ -115,15 +120,16 @@ static void update_aliens(void)
   int left, right;
   alien_bounds(&left, &right);
 
-  bool edge_hit = (horde_x + right + ALIEN_WIDTH >= 128 && horde_dir > 0) || (horde_x + left <= 0 && horde_dir < 0);
+  bool edge_hit = (horde_x + right + ALIEN_WIDTH >= 123 && horde_dir > 0) || (horde_x + left <= 0 && horde_dir < 0);
 
   if(edge_hit)
   {
     horde_dir = -horde_dir;
+    horde_y += 4;
   }
   else
   {
-    horde_x += horde_dir * 4;
+    horde_x += horde_dir * horde_speed;
   }
 } 
 
