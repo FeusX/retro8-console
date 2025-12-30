@@ -17,7 +17,7 @@ static void fire_bullet(float x, float y)
   {
     if(!bullets[i].active)
     {
-      bullets[i].x = x + 6;
+      bullets[i].x = x + 2;
       bullets[i].y = y;
       bullets[i].active = true;
       break;
@@ -43,8 +43,8 @@ static void draw_bullets()
   {
     if(bullets[i].active)
     {
-      ssd1306_draw_pixel((int)bullets[i].x + 1, (int)bullets[i].y, 1);
-      ssd1306_draw_pixel((int)bullets[i].x + 1, (int)bullets[i].y + 1, 1);
+      ssd1306_draw_pixel((int)bullets[i].x, (int)bullets[i].y, 1);
+      ssd1306_draw_pixel((int)bullets[i].x, (int)bullets[i].y + 1, 1);
     }
   }  
 }

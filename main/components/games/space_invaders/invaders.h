@@ -41,13 +41,17 @@ static inline void run_invaders(void)
   handle_firing(is_pressed(BTN_A), ship.x + 1, 52);
   
   update_bullets();
+  update_alien_bullets();
   update_aliens();
+  
   alien_bullet_collision();
+  bunker_bullet_collision();
 
   draw_player();
   draw_bullets();
   draw_aliens();
   draw_alien_bullets();
+  draw_bunkers();
     
   ssd1306_update();
 }
