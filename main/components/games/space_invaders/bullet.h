@@ -2,7 +2,7 @@
 #define BULLET_H
 
 #define FIRE_DELAY 250
-#define MAX_PLAYER_BULLETS 2
+#define MAX_PLAYER_BULLETS 1
 
 typedef struct {
   float x, y;
