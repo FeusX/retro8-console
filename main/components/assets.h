@@ -25,4 +25,8 @@ static const uint8_t player_ship[] = {
   0xFF, 0xFF
 };
 
+static const uint8_t player_bunker[] = {
+  
+};
+
 #endif
