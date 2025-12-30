@@ -15,7 +15,7 @@ static inline void run_menu(void)
   bool current_up = is_pressed(BTN_UP);
   
   ssd1306_clear();
-  draw_string(15, 0, "---- RETRO32 ----");
+  draw_string(15, 0, "---- RETRO8 ----");
   draw_string(20, 20, (menu_cursor == 0) ? "> INVADERS" : "  INVADERS");
   draw_string(20, 30, (menu_cursor == 1) ? "> SNAKE"    : "  SNAKE");
   draw_string(20, 40, (menu_cursor == 2) ? "> TETRIS" : "  TETRIS");

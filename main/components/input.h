@@ -10,6 +10,8 @@
 #define BTN_A 16
 #define BTN_B 17
 
+// BTN_B is just in case if i need one more button so id doesn't really have a real usage right now
+
 static inline void inputs_init()
 {
   gpio_config_t io_conf = {

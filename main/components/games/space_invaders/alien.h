@@ -3,6 +3,8 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_random.h"
+#include "esp_system.h"
 
 #include "../../ssd1306.h"
 #include "../../assets.h"
@@ -11,6 +13,7 @@
 #define ALIEN_ROWS 3
 #define ALIEN_COLS 4
 #define MAX_ALIENS (ALIEN_ROWS * ALIEN_COLS)
+#define MAX_ALIEN_BULLETS 2
 
 #define ALIEN_HEIGHT 8
 #define ALIEN_WIDTH 8
@@ -20,16 +23,24 @@ typedef struct {
   bool alive;
 } alien_t;
 
+typedef struct {
+  float x, y;
+  bool active;
+} alien_bullet_t;
+
 static alien_t aliens[MAX_ALIENS];
+
+static alien_bullet_t alien_bullets[MAX_ALIEN_BULLETS];
 
 static int8_t horde_x, horde_y, horde_dir;
 
-static int8_t horde_speed = 3;
-
-static TickType_t step_delay;
-static TickType_t last_step_time;
-
+static int8_t horde_speed = 2;
 static int8_t aliens_alive = 12;
+
+static int16_t alien_fire_timer;
+
+static TickType_t step_delay, last_step_time, alien_fire_delay;
+static TickType_t last_alien_fire = 0;
 
 static void init_aliens(void)
 {
@@ -46,8 +57,12 @@ static void init_aliens(void)
   }
 
   horde_x = 8;
-  horde_y = 16;
+  horde_y = 4;
   horde_dir = 1;
+
+  alien_fire_timer = 1000;
+  alien_fire_delay = pdMS_TO_TICKS(alien_fire_timer);
+  last_alien_fire = xTaskGetTickCount();
 
   step_delay = pdMS_TO_TICKS(600);
   last_step_time = xTaskGetTickCount();
@@ -66,9 +81,9 @@ static void draw_aliens(void)
   }
 }
 
-static void bullet_collision(void)
+static void alien_bullet_collision(void)
 {
-  for(int b = 0; b < MAX_BULLETS; b++)
+  for(int b = 0; b < MAX_PLAYER_BULLETS; b++)
   {
     if(!bullets[b].active) continue;
 
@@ -87,6 +102,12 @@ static void bullet_collision(void)
         bullets[b].active = false;
         aliens[a].alive = false;
         aliens_alive--;
+        horde_speed += 1;
+        if(alien_fire_timer > 250)
+        {
+          alien_fire_timer -= 50;
+          alien_fire_delay = pdMS_TO_TICKS(alien_fire_timer);
+        }
         return;
       }
     }
@@ -103,8 +124,54 @@ static void alien_bounds(int *left, int *right)
     if(!aliens[i].alive) continue;
 
     int x = aliens[i].x;
-    if(x < *left) *left = x;
-    if(x > *right) *right = x;
+    if(horde_x + x < *left) *left = horde_x + x;
+    if(horde_x + x > *right) *right = horde_x + x;
+  }
+}
+
+static int alien_shooter(void)
+{
+  int col = esp_random() % ALIEN_COLS;
+
+  for(int r = ALIEN_ROWS - 1; r >= 0; r--)
+  {
+    int i = r * ALIEN_COLS + col;
+    if(aliens[i].alive) return i;
+  }
+
+  return -1;
+}
+
+static void alien_fire(void)
+{
+  TickType_t now = xTaskGetTickCount();
+  if(now - last_alien_fire < alien_fire_delay) return;
+
+  for(int b = 0; b < MAX_ALIEN_BULLETS; b++)
+  {
+    if(!alien_bullets[b].active)
+    {
+      int a = alien_shooter();
+      if(a < 0) return;
+
+      alien_bullets[b].x = horde_x + aliens[a].x + ALIEN_WIDTH / 2;
+      alien_bullets[b].y = horde_y + aliens[a].y + ALIEN_HEIGHT;
+      alien_bullets[b].active = true;
+
+      last_alien_fire = now;
+      return;
+    }
+  }
+}
+
+static void update_alien_bullets(void)
+{
+  for(int i = 0; i < MAX_ALIEN_BULLETS; i++)
+  {
+    if(!alien_bullets[i].active) continue;
+
+    alien_bullets[i].y += 2;
+    if(alien_bullets[i].y >= 63) alien_bullets[i].active = false;
   }
 }
 
@@ -112,25 +179,43 @@ static void update_aliens(void)
 {
   TickType_t now = xTaskGetTickCount();
 
-  if(now - last_step_time < step_delay)
-    return;
+  if(now - last_step_time >= step_delay)
+  { 
+    last_step_time = now;
 
-  last_step_time = now;
+    int left, right;
+    alien_bounds(&left, &right);
 
-  int left, right;
-  alien_bounds(&left, &right);
+    int next_left = left + horde_dir * horde_speed;
+    int next_right = right + horde_dir * horde_speed;
 
-  bool edge_hit = (horde_x + right + ALIEN_WIDTH >= 123 && horde_dir > 0) || (horde_x + left <= 0 && horde_dir < 0);
+    bool edge_hit = (next_right + ALIEN_WIDTH >= 128 && horde_dir > 0) || (next_left <= 0 && horde_dir < 0);
 
-  if(edge_hit)
-  {
-    horde_dir = -horde_dir;
-    horde_y += 4;
+    if(edge_hit)
+    {
+      horde_dir = -horde_dir;
+      horde_y += 4;
+    }
+    else
+    {
+      horde_x += horde_dir * horde_speed;
+    }
   }
-  else
+
+  alien_fire();
+
+  update_alien_bullets();
+}
+
+static void draw_alien_bullets(void)
+{
+  for(int i = 0; i < MAX_ALIEN_BULLETS; i++)
   {
-    horde_x += horde_dir * horde_speed;
+    if(!alien_bullets[i].active) continue;
+
+    ssd1306_draw_pixel((int)alien_bullets[i].x, (int)alien_bullets[i].y, 1);
+    ssd1306_draw_pixel((int)alien_bullets[i].x, (int)alien_bullets[i].y + 1, 1);
   }
-} 
+}
 
 #endif

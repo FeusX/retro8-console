@@ -10,24 +10,44 @@
 #include "alien.h"
 
 static bool aliens_init = false;
+static bool wave_pending;
 
 static inline void run_invaders(void)
 {
-  if(!aliens_init || aliens_alive == 0) { init_aliens(); aliens_init = true; aliens_alive = 12; horde_speed++; }
-  ssd1306_clear();
+  if(!aliens_init)
+  {
+    init_aliens();
+    aliens_init = true;
+    wave_pending = true;
+  }
+  else if(aliens_alive <= 0 && !wave_pending)
+  {
+    wave_pending = true;
+  }
 
-  draw_string(3, 0, "-- SPACE INVADERS --");
+  if(wave_pending)
+  {
+    init_aliens();
+    aliens_alive = MAX_ALIENS;
+
+    horde_speed = 2;
+
+    wave_pending = false;
+  }
+
+  ssd1306_clear();
 
   update_player();
   handle_firing(is_pressed(BTN_A), ship.x + 1, 52);
   
   update_bullets();
   update_aliens();
-  bullet_collision();
+  alien_bullet_collision();
 
   draw_player();
   draw_bullets();
   draw_aliens();
+  draw_alien_bullets();
     
   ssd1306_update();
 }

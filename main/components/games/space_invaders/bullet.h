@@ -2,18 +2,18 @@
 #define BULLET_H
 
 #define FIRE_DELAY 250
-#define MAX_BULLETS 5
+#define MAX_PLAYER_BULLETS 2
 
 typedef struct {
   float x, y;
   bool active;
-} bullet_t;
+} player_bullet_t;
 
-static bullet_t bullets[MAX_BULLETS];
+static player_bullet_t bullets[MAX_PLAYER_BULLETS];
 
 static void fire_bullet(float x, float y)
 {
-  for(int i = 0; i < MAX_BULLETS; i++)
+  for(int i = 0; i < MAX_PLAYER_BULLETS; i++)
   {
     if(!bullets[i].active)
     {
@@ -39,7 +39,7 @@ static void handle_firing(bool fired, float x, float y)
 
 static void draw_bullets()
 {
-  for(int i = 0; i < MAX_BULLETS; i++)
+  for(int i = 0; i < MAX_PLAYER_BULLETS; i++)
   {
     if(bullets[i].active)
     {
@@ -51,7 +51,7 @@ static void draw_bullets()
 
 static void update_bullets()
 {
-  for(int i = 0; i < MAX_BULLETS; i++)
+  for(int i = 0; i < MAX_PLAYER_BULLETS; i++)
   {
     if(bullets[i].active)
     {
