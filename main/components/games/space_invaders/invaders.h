@@ -5,18 +5,42 @@
 #include "../../input.h"
 #include "../../assets.h"
 #include "../../font.h"
+
+static bool aliens_init = false;
+static bool player_init = false;
+static bool wave_pending;
+
 #include "bullet.h"
 #include "player.h"
 #include "alien.h"
 
-static bool aliens_init = false;
-static bool wave_pending;
+static inline void reset_invaders(void)
+{
+  ship.x = 63;
+  ship.hp = 3;
+
+  int start_x[3] = {20, 55, 90};
+
+  for(int i = 0; i < 3; i++)
+  {
+    player_bunker[i].x = start_x[i];
+    player_bunker[i].hp = 5;
+    player_bunker[i].alive = true;
+  }
+
+  for(int i = 0; i < MAX_ALIEN_BULLETS; i++)
+  { alien_bullets[i].active = false; }
+
+  aliens_init = false;
+  player_init = true;
+}
 
 static inline void run_invaders(void)
 {
+  if(!player_init)
+  { reset_invaders(); }
   if(!aliens_init)
   {
-    init_aliens();
     aliens_init = true;
     wave_pending = true;
   }
@@ -24,7 +48,6 @@ static inline void run_invaders(void)
   {
     wave_pending = true;
   }
-
   if(wave_pending)
   {
     init_aliens();

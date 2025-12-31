@@ -51,10 +51,10 @@ static void bunker_bullet_collision(void)
 
     for(int j = 0; j < 3; j++)
     {
-      if(!player_bunker[i].alive) continue;
+      if(!player_bunker[j].alive) continue;
 
       int ax = player_bunker[j].x;
-      int ay = 52;
+      int ay = 40;
 
       if(aabb_overlap(bx, by, 1, 2, ax, ay, 8, 8))
       {
@@ -95,7 +95,7 @@ static void player_bullet_collision(void)
     int ax = (int)ship.x;
     int ay = 52;
   
-    if(aabb_overlap(bx, by, 1, 2, ax, ay, 4, 4))
+    if(aabb_overlap(bx, by, 1, 2, ax, ay, 8, 4))
     {
       alien_bullets[i].active = false;
 
@@ -107,12 +107,16 @@ static void player_bullet_collision(void)
         char status[16];
         sprintf(status, "%d hp left", ship.hp);
         draw_string(10, 30, status);
+        ssd1306_update();
         vTaskDelay(pdMS_TO_TICKS(2000));
       }
       else
       {
         draw_string(10, 30, "GAME OVER");
+
+        ssd1306_update();
         vTaskDelay(pdMS_TO_TICKS(2000));
+        player_init = false;
         current_state = STATE_MENU;
       }
     }
