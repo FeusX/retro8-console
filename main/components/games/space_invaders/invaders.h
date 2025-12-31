@@ -46,6 +46,7 @@ static inline void run_invaders(void)
   
   alien_bullet_collision();
   bunker_bullet_collision();
+  player_bullet_collision();
 
   draw_player();
   draw_bullets();

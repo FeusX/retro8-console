@@ -1,9 +1,13 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <stdio.h>
+
 #include "../../ssd1306.h"
 #include "../../input.h"
 #include "../../assets.h"
+#include "../../font.h"
+#include "../../states.h"
 #include "alien.h"
 #include "bullet.h"
 
@@ -76,6 +80,42 @@ static void draw_bunkers(void)
     if(!player_bunker[i].alive) continue;
 
     draw_sprite_h(player_bunker[i].x, 40, 8, 8, player_bunker_sprite);
+  }
+}
+
+static void player_bullet_collision(void)
+{
+  for(int i = 0; i < MAX_ALIEN_BULLETS; i++)
+  {
+    if(!alien_bullets[i].active) continue;
+
+    int bx = (int)alien_bullets[i].x;
+    int by = (int)alien_bullets[i].y;
+
+    int ax = (int)ship.x;
+    int ay = 52;
+  
+    if(aabb_overlap(bx, by, 1, 2, ax, ay, 4, 4))
+    {
+      alien_bullets[i].active = false;
+
+      ship.hp--;
+      
+      ssd1306_clear();
+      if(ship.hp > 0)
+      {
+        char status[16];
+        sprintf(status, "%d hp left", ship.hp);
+        draw_string(10, 30, status);
+        vTaskDelay(pdMS_TO_TICKS(2000));
+      }
+      else
+      {
+        draw_string(10, 30, "GAME OVER");
+        vTaskDelay(pdMS_TO_TICKS(2000));
+        current_state = STATE_MENU;
+      }
+    }
   }
 }
 
