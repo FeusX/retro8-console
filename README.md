@@ -18,6 +18,5 @@
 
 <p>Tetris game isn't present right now.</p>
 
-[INSERT VIDEO HERE]
-[INSERT VIDEO HERE]
-[INSERT VIDEO HERE]
+[Invaders (https://youtu.be/0rY3W1rB7OQ)] <br>
+[Snake (https://youtu.be/Yr9xfbP7oNM)] <br>
