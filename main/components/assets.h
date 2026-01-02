@@ -13,4 +13,18 @@ static const uint8_t player_bunker_sprite[] = {
   0x5A, 0xDB, 0xDB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF  
 };
 
+// ---- TETRIS ----
+const uint16_t tetrominoes[7][4] = {
+  { // I
+    0x0F00,
+    0x2222,
+    0x0F00,
+    0x4444
+  },
+
+  { // T
+    // brb
+  },
+};
+
 #endif
