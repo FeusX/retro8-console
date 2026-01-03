@@ -4,7 +4,7 @@
 #include "esp_system.h"
 
 #include "components/ssd1306.h"
-//#include "components/bootloader.h"
+#include "components/bootloader.h"
 #include "components/input.h"
 #include "components/font.h"
 #include "components/menu.h"
@@ -16,12 +16,7 @@ system_state_t current_state = STATE_MENU;
 
 void app_main(void)
 {
-  printf("Initializing SSD1306...\n");
-  ssd1306_init();
-  printf("SSD1306 initialized.\n");
-  printf("Initializing inputs...\n");
-  inputs_init();
-  printf("Inputs initialized.\n");
+  retro8_boot();
 
   ssd1306_clear();
 
