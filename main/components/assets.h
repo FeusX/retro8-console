@@ -1,6 +1,10 @@
 #ifndef ASSETS_H
 #define ASSETS_H
 
+typedef struct {
+  uint16_t rot[4];
+} tetromino;
+
 // ---- SPACE INVADERS ----
 
 static const uint8_t invader_small[] = { 0x18, 0x3C, 0x7E, 0xDB, 0xFF, 0x24, 0x5A, 0xA5 };
@@ -14,17 +18,27 @@ static const uint8_t player_bunker_sprite[] = {
 };
 
 // ---- TETRIS ----
-const uint16_t tetrominoes[7][4] = {
-  { // I
-    0x0F00,
-    0x2222,
-    0x0F00,
-    0x4444
-  },
+const tetromino pieces[7] = {
+  // I
+  {{0x0F00, 0x2222, 0x00F0, 0x4444}},
 
-  { // T
-    // brb
-  },
+  // O
+  {{0x6600, 0x6600, 0x6600, 0x6600}},
+
+  // T
+  {{0x0E40, 0x4C40, 0x4E00, 0x4640}},
+
+  // S
+  {{0x06C0, 0x8C40, 0x06C0, 0x8C40}},
+
+  // Z
+  {{0x0C60, 0x4C80, 0x0C60, 0x4C80}},
+
+  // J
+  {{0x8E00, 0x6440, 0x0E20, 0x44C0}},
+
+  // L
+  {{0x2E00, 0x4460, 0x0E80, 0xC440}},
 };
 
 #endif
