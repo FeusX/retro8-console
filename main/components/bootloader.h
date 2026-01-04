@@ -24,7 +24,7 @@ static void retro8_boot(void)
 	// init inputs
 	ssd1306_clear();
 	inputs_init();
-	draw_string(0, 20, "Initializing inputs");
+	draw_string(0, 20, "Initializing inputs.");
 	ssd1306_update();
 	vTaskDelay(pdMS_TO_TICKS(2000));
 	ssd1306_clear();

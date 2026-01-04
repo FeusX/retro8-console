@@ -31,6 +31,8 @@ static inline void reset_invaders(void)
   for(int i = 0; i < MAX_ALIEN_BULLETS; i++)
   { alien_bullets[i].active = false; }
 
+  bullets[0].active = false;
+
   aliens_init = false;
   player_init = true;
 }
