@@ -8,17 +8,6 @@
 #include "font.h"
 #include "input.h"
 
-/*static const uint8_t boot_logo_tl[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-static const uint8_t boot_logo_tm[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-static const uint8_t boot_logo_tr[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-static const uint8_t boot_logo_ml[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-static const uint8_t boot_logo_mm[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-static const uint8_t boot_logo_mr[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-static const uint8_t boot_logo_bl[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-static const uint8_t boot_logo_bm[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-static const uint8_t boot_logo_br[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-*/
-
 static void retro8_boot(void)
 {
 	// init ssd1306
@@ -43,21 +32,17 @@ static void retro8_boot(void)
 	ssd1306_update();
 	vTaskDelay(pdMS_TO_TICKS(1000));
 
-	
-	// draw the top tiles
-	/*draw_sprite_h(52, 20, 8, 8, boot_logo_tl);
-	draw_sprite_h(60, 20, 8, 8, boot_logo_tm);
-	draw_sprite_h(68, 20, 8, 8, boot_logo_tr);
-
-	// draw the middle tiles
-	draw_sprite_h(52, 28, 8, 8, boot_logo_ml);
-	draw_sprite_h(60, 28, 8, 8, boot_logo_mm);
-	draw_sprite_h(68, 28, 8, 8, boot_logo_mr);
-
-	// draw the bottom tiles
-	draw_sprite_h(52, 36, 8, 8, boot_logo_bl);
-	draw_sprite_h(60, 36, 8, 8, boot_logo_bm);
-	draw_sprite_h(68, 36, 8, 8, boot_logo_br);*/
+	ssd1306_clear();
+	draw_string(0,  0, "oooooo. .oooo.");
+	draw_string(0,  8, "`888 Y88 d88 8");
+	draw_string(0, 16, " 888 d88 Y88 8");
+	draw_string(0, 24, " 88888P   888b");
+	draw_string(0, 32, " 888`88b .8 88");
+	draw_string(0, 40, " 888 88b 8. 8P");
+	draw_string(0, 48, "o888o o888 bo8");
+	draw_string(0, 56, "BY FEUSX");
+	ssd1306_update();
+	vTaskDelay(pdMS_TO_TICKS(3000));
 }
 
 #endif
