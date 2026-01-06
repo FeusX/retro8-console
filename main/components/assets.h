@@ -2,7 +2,7 @@
 #define ASSETS_H
 
 typedef struct {
-  uint16_t rot[4];
+  uint16_t rotation[4];
 } tetromino;
 
 // ---- SPACE INVADERS ----

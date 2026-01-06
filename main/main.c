@@ -9,8 +9,11 @@
 #include "components/font.h"
 #include "components/menu.h"
 #include "components/states.h"
+
+// include the games
 #include "components/games/space_invaders/invaders.h"
 #include "components/games/snake/snake.h"
+#include "components/games/tetris/tetris.h"
 
 system_state_t current_state = STATE_MENU;
 
@@ -32,6 +35,9 @@ void app_main(void)
         break;
       case STATE_GAME_SNAKE:
         run_snake();
+        break;
+      case STATE_GAME_TETRIS:
+        run_tetris();
         break;
       default:
         current_state = STATE_MENU;
