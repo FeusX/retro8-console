@@ -7,9 +7,9 @@
 
 #include "esp_system.h"
 #include "esp_random.h"
-#include "states.h"
-#include "ssd1306.h"
-#include "input.h"
+#include "../../states.h"
+#include "../../ssd1306.h"
+#include "../../input.h"
 
 #define MAX_LENGTH 100
 
@@ -124,7 +124,6 @@ static void run_snake(void)
     }
   }
 
-  if(is_pressed(BTN_B)) current_state = STATE_MENU;
   ssd1306_update();
 }
 

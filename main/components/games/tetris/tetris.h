@@ -11,6 +11,7 @@
 #include "../../input.h"
 #include "../../ssd1306.h"
 #include "../../assets.h"
+#include "../../font.h"
 
 struct {
   int x, y;
@@ -18,9 +19,10 @@ struct {
   int rotation;
 } current_piece;
 
-uint8_t board[BOARD_WIDTH][BOARD_HEIGHT] = {0};
-int16_t score = 0;
+static uint8_t board[BOARD_WIDTH][BOARD_HEIGHT] = {0};
+static int16_t score = 0;
 static bool initialized = false;
+static bool game_over = false;
 
 static inline bool check_collision(int next_x, int next_y, int next_rot)
 {
@@ -49,8 +51,23 @@ static inline void spawn_piece()
 
   if(check_collision(current_piece.x, current_piece.y, current_piece.rotation))
   {
-    for(int x=0; x<BOARD_WIDTH; x++) for(int y=0; y<BOARD_HEIGHT; y++) board[x][y] = 0;
+    game_over = true;
   }
+}
+
+static void reset_game()
+{
+  for(int x = 0; x < BOARD_WIDTH; x++)
+  {
+    for(int y = 0; y < BOARD_HEIGHT; y++)
+    {
+      board[x][y] = 0;
+    }
+  }
+
+  score = 0;
+  game_over = false;
+  spawn_piece();
 }
 
 static inline void draw_game()
@@ -118,6 +135,7 @@ static void clear_lines()
       { board[x1][0] = 0; }
 
       y++;
+      score += 100;
     }
   }
 }
@@ -148,11 +166,24 @@ static void run_tetris(void)
   uint16_t current_delay = base_delay; 
   
   if(!initialized)
-  { spawn_piece(); last_time = (uint32_t)(xTaskGetTickCount() * portTICK_PERIOD_MS); initialized = true; }
+  { reset_game(); last_time = (uint32_t)(xTaskGetTickCount() * portTICK_PERIOD_MS); initialized = true; }
+
+  if(game_over)
+  {
+    initialized = false;
+    vTaskDelay(pdMS_TO_TICKS(500));
+    ssd1306_clear();
+
+    draw_string(21, 28, "GAME OVER");
+    ssd1306_update();
+    vTaskDelay(pdMS_TO_TICKS(1000));
+
+    current_state = STATE_MENU;
+    
+    return;
+  }
 
   uint32_t now = (xTaskGetTickCount() * portTICK_PERIOD_MS);
-
-  /*if last block height is > board height, game state = game over*/
 
   if(is_pressed(BTN_LEFT))
   {

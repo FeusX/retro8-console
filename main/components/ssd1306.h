@@ -18,7 +18,7 @@
 
 static i2c_master_dev_handle_t dev_handle;
 
-uint8_t vram[1024] __attribute__((weak));
+uint8_t vram[1024];
 
 static inline esp_err_t ssd1306_send_command(uint8_t cmd)
 {
