@@ -2,8 +2,10 @@
 #define TETRIS_H
 
 #define BOARD_WIDTH  10
-#define BOARD_HEIGHT 20
+#define BOARD_HEIGHT 18
 #define BLOCK_SIZE   3
+
+#include <stdio.h>
 
 #include "esp_system.h"
 #include "esp_random.h"
@@ -21,8 +23,10 @@ struct {
 
 static uint8_t board[BOARD_WIDTH][BOARD_HEIGHT] = {0};
 static int16_t score = 0;
+static uint32_t last_time = 0;
 static bool initialized = false;
 static bool game_over = false;
+const uint16_t base_delay = 200;
 
 static inline bool check_collision(int next_x, int next_y, int next_rot)
 {
@@ -34,8 +38,11 @@ static inline bool check_collision(int next_x, int next_y, int next_rot)
     {
       int px = next_x + (i % 4);
       int py = next_y + (i / 4);
-      if(px < 0 || px >= BOARD_WIDTH || py >= BOARD_HEIGHT) return true;
-      if(py >= 0 && board[px][py]) return true;
+
+      if(px < 0 || px >= BOARD_WIDTH) return true;
+      if(py >= BOARD_HEIGHT) return true;
+      if(py >= 0)
+      { if(board[px][py]) return true; }
     }
   }
 
@@ -55,7 +62,7 @@ static inline void spawn_piece()
   }
 }
 
-static void reset_game()
+static inline void reset_game()
 {
   for(int x = 0; x < BOARD_WIDTH; x++)
   {
@@ -74,9 +81,15 @@ static inline void draw_game()
 {
   ssd1306_clear();
 
-  for(int y = 0; y < (BOARD_HEIGHT * BLOCK_SIZE); y++) ssd1306_draw_pixel(9, y, true);
-  for(int y = 0; y < (BOARD_HEIGHT * BLOCK_SIZE); y++) ssd1306_draw_pixel(10 + (BOARD_WIDTH * BLOCK_SIZE), y, true);
-  for(int x = 9; x <= 10 + (BOARD_WIDTH * BLOCK_SIZE); x++) ssd1306_draw_pixel(x, BOARD_HEIGHT * BLOCK_SIZE, true);
+  draw_string(10, 0, "--- TETRIS ---");
+
+  char score_str[16];
+  sprintf(score_str, "SCORE: %d", score);
+  draw_string(45, 20, score_str);
+
+  for(int y = 8; y < (BOARD_HEIGHT * BLOCK_SIZE) + 8; y++) ssd1306_draw_pixel(9, y, true);
+  for(int y = 8; y < (BOARD_HEIGHT * BLOCK_SIZE) + 8; y++) ssd1306_draw_pixel(10 + (BOARD_WIDTH * BLOCK_SIZE), y, true);
+  for(int x = 9; x <= 10 + (BOARD_WIDTH * BLOCK_SIZE); x++) ssd1306_draw_pixel(x, BOARD_HEIGHT * BLOCK_SIZE + 8, true);
 
   for(int x = 0; x < BOARD_WIDTH; x++)
   {
@@ -87,7 +100,7 @@ static inline void draw_game()
         for(int i = 0; i < BLOCK_SIZE; i++)
         {
           for(int j = 0; j < BLOCK_SIZE; j++)
-          { ssd1306_draw_pixel(x * BLOCK_SIZE + i + 10, y * BLOCK_SIZE + j, true); }
+          { ssd1306_draw_pixel(x * BLOCK_SIZE + i + 10, y * BLOCK_SIZE + j + 8, true); }
         }
       }
     }
@@ -105,7 +118,7 @@ static inline void draw_game()
       for(int dx = 0; dx < BLOCK_SIZE; dx++)
       {
         for(int dy=0; dy<BLOCK_SIZE; dy++)
-        { ssd1306_draw_pixel(px*BLOCK_SIZE + dx + 10, py*BLOCK_SIZE + dy, true); }
+        { ssd1306_draw_pixel(px * BLOCK_SIZE + dx + 10, py * BLOCK_SIZE + dy + 8, true); }
       } 
     }
   }
@@ -113,7 +126,7 @@ static inline void draw_game()
   ssd1306_update();
 }
 
-static void clear_lines()
+static inline void clear_lines()
 {
   for(int y = BOARD_HEIGHT - 1; y >= 0; y--)
   {
@@ -140,7 +153,7 @@ static void clear_lines()
   }
 }
 
-static void lock_piece()
+static inline void lock_piece()
 {
   uint16_t mask = pieces[current_piece.type].rotation[current_piece.rotation];
 
@@ -161,8 +174,6 @@ static void lock_piece()
 
 static void run_tetris(void)
 {
-  static uint32_t last_time = 0;
-  const uint16_t base_delay = 200;
   uint16_t current_delay = base_delay; 
   
   if(!initialized)

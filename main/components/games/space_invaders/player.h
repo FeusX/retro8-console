@@ -112,7 +112,7 @@ static void player_bullet_collision(void)
       }
       else
       {
-        draw_string(10, 30, "GAME OVER");
+        draw_string(21, 28, "GAME OVER");
 
         ssd1306_update();
         vTaskDelay(pdMS_TO_TICKS(2000));

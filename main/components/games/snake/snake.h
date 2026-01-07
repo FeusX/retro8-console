@@ -97,7 +97,7 @@ static void run_snake(void)
       {
         active = false;
         ssd1306_clear();
-        draw_string(3, 20, "GAME OVER");
+        draw_string(21, 28, "GAME OVER");
         ssd1306_update();
         vTaskDelay(pdMS_TO_TICKS(2000));
         current_state = STATE_MENU;
