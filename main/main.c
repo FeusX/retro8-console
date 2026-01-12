@@ -14,6 +14,7 @@
 #include "components/games/space_invaders/invaders.h"
 #include "components/games/snake/snake.h"
 #include "components/games/tetris/tetris.h"
+#include "components/games/pacman/pacman.h"
 
 system_state_t current_state = STATE_MENU;
 
@@ -38,6 +39,9 @@ void app_main(void)
         break;
       case STATE_GAME_TETRIS:
         run_tetris();
+        break;
+      case STATE_GAME_PACMAN:
+        run_pacman();
         break;
       default:
         current_state = STATE_MENU;
