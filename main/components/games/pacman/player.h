@@ -24,9 +24,9 @@ static inline void update_pacman(uint8_t map[MAZE_HEIGHT][MAZE_WIDTH])
   int draw_x = player_x - 1;
   int draw_y = player_y - 1;
 
-  for(int i = 0; i < 6; i++) // this is for clearing just the pacman
+  for(int i = 0; i < 8; i++) // this is for clearing just the pacman
   {
-    for(int j = 0; j < 6; j++)
+    for(int j = 0; j < 8; j++)
     {
       ssd1306_draw_pixel(draw_x + i, draw_y + j, false);
     }
