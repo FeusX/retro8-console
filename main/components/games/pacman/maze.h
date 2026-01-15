@@ -1,24 +1,22 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-#define MAZE_WIDTH  21
-#define MAZE_HEIGHT 10
-#define TILE_SIZE   6   
+#define MAZE_WIDTH 16
+#define MAZE_HEIGHT 8
+#define TILE_SIZE 8
 
 static const uint8_t maze_map[MAZE_HEIGHT][MAZE_WIDTH] = {
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-  {1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1},
-  {1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,1,1,0,1,1,0,0,0,0,0,0,0,1,1,0,1,1,0,1},
-  {1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1},
-  {1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1},
+  {1,0,1,1,1,0,1,0,1,1,1,1,1,1,0,1},
+  {1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1},
+  {1,0,1,0,1,1,1,0,1,1,1,1,0,1,0,1},
+  {1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1},
+  {1,0,1,1,1,0,1,1,1,0,1,0,1,1,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
-void draw_maze(void)
+static inline void draw_maze(void)
 {
   for(int x = 0; x < MAZE_WIDTH; x++)
   {
@@ -41,8 +39,11 @@ void draw_maze(void)
       }
       else
       {
-        ssd1306_draw_pixel(px + 2, py + 2, true);
-        ssd1306_draw_pixel(px + 3, py + 3, true);   
+        int center = TILE_SIZE / 2;
+        ssd1306_draw_pixel(px + center, py + center, true);
+        ssd1306_draw_pixel(px + center - 1, py + center, true);    
+        ssd1306_draw_pixel(px + center, py + center - 1, true);    
+        ssd1306_draw_pixel(px + center - 1, py + center - 1, true);    
       }
     }
   }  
