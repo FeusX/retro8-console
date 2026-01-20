@@ -56,6 +56,14 @@ static bool try_ghost_move(ghost_t *current_ghost, int8_t dx, int8_t dy,
 
 static inline void update_ghosts(ghost_t *current_ghost, ghost_t *all_ghosts)
 {
+  static uint8_t movement_delay = 0;
+
+  if(movement_delay++ < 8)
+  {
+    return;
+  }
+  movement_delay = 0;
+  
   int8_t directions[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
   int i = esp_random() % 4;
