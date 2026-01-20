@@ -42,7 +42,7 @@ void run_pacman(void)
 
   ssd1306_clear();
   update_pacman(game_map);
-  draw_maze();
+  draw_maze(game_map);
   for(int i = 0; i < MAX_GHOSTS; i++)
   { update_ghosts(&ghosts[i], ghosts); }
   for(int i = 0; i < MAX_GHOSTS; i++)

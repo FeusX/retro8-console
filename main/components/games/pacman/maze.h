@@ -16,13 +16,13 @@ static const uint8_t maze_map[MAZE_HEIGHT][MAZE_WIDTH] = {
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
-static inline void draw_maze(void)
+static inline void draw_maze(const uint8_t map[MAZE_HEIGHT][MAZE_WIDTH])
 {
   for(int x = 0; x < MAZE_WIDTH; x++)
   {
     for(int y = 0; y < MAZE_HEIGHT; y++)
     {
-      uint8_t tile_type = maze_map[y][x];
+      uint8_t tile_type = map[y][x];
 
       int16_t px = x * TILE_SIZE;
       int16_t py = y * TILE_SIZE;
@@ -37,7 +37,7 @@ static inline void draw_maze(void)
           }
         }
       }
-      else
+      else if(tile_type == 0)
       {
         int center = TILE_SIZE / 2;
         ssd1306_draw_pixel(px + center, py + center, true);

@@ -56,21 +56,22 @@ static bool try_ghost_move(ghost_t *current_ghost, int8_t dx, int8_t dy,
 
 static inline void update_ghosts(ghost_t *current_ghost, ghost_t *all_ghosts)
 {
-  static uint8_t movement_delay = 0;
-
-  if(movement_delay++ < 8)
-  {
-    return;
-  }
-  movement_delay = 0;
+  static uint8_t logic_tick = 0;
+  logic_tick++;
+  
+  if (logic_tick < 10) return; 
+  logic_tick = 0;
   
   int8_t directions[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
-  int i = esp_random() % 4;
-  int8_t dx = directions[i][0];
-  int8_t dy = directions[i][1];
+  for(int i = 0; i < 4; i++)
+  {
+    int dir_idx = (esp_random() % 4 + 1) % 4;
+    int8_t dx = directions[dir_idx][0];
+    int8_t dy = directions[dir_idx][1];
 
-  try_ghost_move(current_ghost, dx, dy, maze_map, all_ghosts);
+    if(try_ghost_move(current_ghost, dx, dy, maze_map, all_ghosts)) return;
+  }
 }
 
 static void draw_ghost(const ghost_t *g, const uint8_t *bitmap)
