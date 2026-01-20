@@ -21,40 +21,21 @@ static inline void init_pacman(void)
 
 static inline void update_pacman(uint8_t map[MAZE_HEIGHT][MAZE_WIDTH])
 {
-  int draw_x = player_x - 1; 
-  int draw_y = player_y - 1;
-
-  for(int i = 0; i < 10; i++) 
-  {
-    for(int j = 0; j < 10; j++)
-    {
-      int target_px = draw_x + i;
-      int target_py = draw_y + j;
-
-      if((target_px / TILE_SIZE) >= 0 && (target_px / TILE_SIZE) < MAZE_WIDTH &&
-          (target_py / TILE_SIZE) >= 0 && (target_py / TILE_SIZE) < MAZE_HEIGHT)
-      {
-        if(map[target_py / TILE_SIZE][target_px / TILE_SIZE] != 1)
-        { ssd1306_draw_pixel(target_px, target_py, false); }
-      }
-    }
-  }
-
-  int dx = 0;
-  int dy = 0;
+  int16_t dx = 0;
+  int16_t dy = 0;
 
   if(is_pressed(BTN_UP)) { dy = -1; player_dir = 2; }
   if(is_pressed(BTN_DOWN)) { dy = 1;  player_dir = 3; }
   if(is_pressed(BTN_RIGHT)) { dx = 1;  player_dir = 0; }
   if(is_pressed(BTN_LEFT)) { dx = -1; player_dir = 1; }
 
-  int next_x = player_x + dx;
-  int next_y = player_y + dy;
+  int16_t next_x = player_x + dx;
+  int16_t next_y = player_y + dy;
 
-  int grid_x1 = (next_x + 1) / TILE_SIZE;
-  int grid_y1 = (next_y + 1) / TILE_SIZE;
-  int grid_x2 = (next_x + TILE_SIZE - 2) / TILE_SIZE;
-  int grid_y2 = (next_y + TILE_SIZE - 2) / TILE_SIZE;
+  int16_t grid_x1 = (next_x + 1) / TILE_SIZE;
+  int16_t grid_y1 = (next_y + 1) / TILE_SIZE;
+  int16_t grid_x2 = (next_x + TILE_SIZE - 2) / TILE_SIZE;
+  int16_t grid_y2 = (next_y + TILE_SIZE - 2) / TILE_SIZE;
 
   if(map[grid_y1][grid_x1] != 1 && 
      map[grid_y1][grid_x2] != 1 &&
@@ -72,16 +53,14 @@ static inline void update_pacman(uint8_t map[MAZE_HEIGHT][MAZE_WIDTH])
     }
   }
 
-  int center_x = (player_x + TILE_SIZE / 2) / TILE_SIZE;
-  int center_y = (player_y + TILE_SIZE / 2) / TILE_SIZE;
+  int16_t center_x = (player_x + TILE_SIZE / 2) / TILE_SIZE;
+  int16_t center_y = (player_y + TILE_SIZE / 2) / TILE_SIZE;
   
   if(map[center_y][center_x] == 0)
-  { 
-      map[center_y][center_x] = 2;
-  }
+  { map[center_y][center_x] = 2; }
 
-  draw_x = player_x - 1;
-  draw_y = player_y - 1;
+  int draw_x = player_x - 1;
+  int draw_y = player_y - 1;
 
   draw_sprite_h(draw_x, draw_y, 8, 8, pacman[player_dir].frame[anim_frame]);
 }
