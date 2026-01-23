@@ -5,6 +5,7 @@
 #include "../../input.h"
 #include "../../font.h"
 #include "../../assets.h"
+#include "../../states.h"
 
 #include "maze.h"
 #include "player.h"
@@ -21,7 +22,7 @@ static inline void init_game(void)
 {
   init_pacman();
 
-  ghosts[0] = spawn_ghost(1, 1);
+  ghosts[0] = spawn_ghost(4, 1);
   ghosts[1] = spawn_ghost(14, 1);
   ghosts[2] = spawn_ghost(14, 6);
 
@@ -30,6 +31,26 @@ static inline void init_game(void)
     for(int x = 0; x < MAZE_WIDTH; x++)
     { game_map[y][x] = maze_map[y][x]; }
   }
+}
+
+static inline void collision_detect(ghost_t *all_ghosts)
+{
+	for(int i = 0; i < MAX_GHOSTS; i++)
+	{
+    if(player_x < all_ghosts[i].x * TILE_SIZE + 6 &&
+       player_x + 6 > all_ghosts[i].x * TILE_SIZE &&
+       player_y < all_ghosts[i].y * TILE_SIZE + 6 &&
+       player_y + 6 > all_ghosts[i].y * TILE_SIZE)
+    {
+      pacman_initialized = false;
+      ssd1306_clear();
+      draw_string(30, 24, "GAME OVER");
+      ssd1306_update();
+      vTaskDelay(pdMS_TO_TICKS(2000));
+      current_state = STATE_MENU;
+      return;
+    }
+	}
 }
 
 void run_pacman(void)
@@ -47,6 +68,7 @@ void run_pacman(void)
   { update_ghosts(&ghosts[i], ghosts); }
   for(int i = 0; i < MAX_GHOSTS; i++)
   { draw_ghost(&ghosts[i], ghost_sprite); }
+  collision_detect(ghosts);
   ssd1306_update();
 }
 

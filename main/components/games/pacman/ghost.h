@@ -22,12 +22,6 @@ static ghost_t spawn_ghost(int start_x, int start_y)
   return g;
 }
 
-static inline uint8_t get_x(const ghost_t *g)
-{ return g->x; }
-
-static inline uint8_t get_y(const ghost_t *g)
-{ return g->y; }
-
 static bool try_ghost_move(ghost_t *current_ghost, int8_t dx, int8_t dy,
                            const uint8_t maze_map[MAZE_HEIGHT][MAZE_WIDTH], ghost_t *all_ghosts)
 {
