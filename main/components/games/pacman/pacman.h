@@ -31,6 +31,8 @@ static inline void init_game(void)
     for(int x = 0; x < MAZE_WIDTH; x++)
     { game_map[y][x] = maze_map[y][x]; }
   }
+
+  eaten_pellets = 0;
 }
 
 static inline void collision_detect(ghost_t *all_ghosts)
@@ -46,7 +48,13 @@ static inline void collision_detect(ghost_t *all_ghosts)
       ssd1306_clear();
       draw_string(30, 24, "GAME OVER");
       ssd1306_update();
-      vTaskDelay(pdMS_TO_TICKS(2000));
+      vTaskDelay(pdMS_TO_TICKS(1000));
+      char score[16];
+      ssd1306_clear();
+      sprintf(score, "PELLETS %d", eaten_pellets);
+      draw_string(20, 24, score);
+      ssd1306_update();
+      vTaskDelay(pdMS_TO_TICKS(1000));
       current_state = STATE_MENU;
       return;
     }

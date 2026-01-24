@@ -7,8 +7,8 @@
 #include "maze.h"
 
 static int16_t player_x, player_y;
-static int8_t player_dir;
-static uint8_t anim_frame, frame_tick; 
+static int8_t player_dir, eaten_pellets;
+static uint8_t anim_frame, frame_tick;
 
 static inline void init_pacman(void)
 {
@@ -57,7 +57,7 @@ static inline void update_pacman(uint8_t map[MAZE_HEIGHT][MAZE_WIDTH])
   int16_t center_y = (player_y + TILE_SIZE / 2) / TILE_SIZE;
   
   if(map[center_y][center_x] == 0)
-  { map[center_y][center_x] = 2; }
+  { map[center_y][center_x] = 2; eaten_pellets++; }
 
   int draw_x = player_x - 1;
   int draw_y = player_y - 1;
