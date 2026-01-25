@@ -47,7 +47,5 @@ void app_main(void)
         current_state = STATE_MENU;
         break;
     }
-
-    vTaskDelay(pdMS_TO_TICKS(33));
   }
 }
