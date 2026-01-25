@@ -68,16 +68,18 @@ void run_pacman(void)
     init_game();
     pacman_initialized = true;
   }
-
-  ssd1306_clear();
-  update_pacman(game_map);
-  draw_maze(game_map);
-  for(int i = 0; i < MAX_GHOSTS; i++)
-  { update_ghosts(&ghosts[i], ghosts); }
-  for(int i = 0; i < MAX_GHOSTS; i++)
-  { draw_ghost(&ghosts[i], ghost_sprite); }
-  collision_detect(ghosts);
-  ssd1306_update();
+  while(1)
+  {
+    ssd1306_clear();
+    update_pacman(game_map);
+    draw_maze(game_map);
+    for(int i = 0; i < MAX_GHOSTS; i++)
+    { update_ghosts(&ghosts[i], ghosts); }
+    for(int i = 0; i < MAX_GHOSTS; i++)
+    { draw_ghost(&ghosts[i], ghost_sprite); }
+    collision_detect(ghosts);
+    ssd1306_update();
+  }
 }
 
 #endif
