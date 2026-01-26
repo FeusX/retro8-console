@@ -74,7 +74,7 @@ static inline void run_menu(void)
     last_up = current_up;
 
     if(is_pressed(BTN_A))
-    { current_state = games[menu_cursor].state; }
+    { current_state = games[menu_cursor].state; break; }
 
     ssd1306_update();
 

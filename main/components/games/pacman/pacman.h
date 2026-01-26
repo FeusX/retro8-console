@@ -79,6 +79,9 @@ void run_pacman(void)
     { draw_ghost(&ghosts[i], ghost_sprite); }
     collision_detect(ghosts);
     ssd1306_update();
+    if(!pacman_initialized)
+    { break; }
+    vTaskDelay(pdMS_TO_TICKS(33));
   }
 }
 

@@ -43,45 +43,54 @@ static inline void run_invaders(void)
 {
   if(!player_init)
   { reset_invaders(); }
-  if(!aliens_init)
-  {
-    aliens_init = true;
-    wave_pending = true;
-  }
-  else if(aliens_alive <= 0 && !wave_pending)
-  {
-    wave_pending = true;
-  }
-  if(wave_pending)
-  {
-    init_aliens();
-    aliens_alive = MAX_ALIENS;
-
-    horde_speed = 2;
-
-    wave_pending = false;
-  }
-
-  ssd1306_clear();
-
-  update_player();
-  handle_firing(is_pressed(BTN_A), ship.x + 1, 52);
   
-  update_bullets();
-  update_alien_bullets();
-  update_aliens();
-  
-  alien_bullet_collision();
-  bunker_bullet_collision();
-  player_bullet_collision();
+  while(1)
+  {
+    if(!aliens_init)
+    {
+      aliens_init = true;
+      wave_pending = true;
+    }
+    else if(aliens_alive <= 0 && !wave_pending)
+    {
+      wave_pending = true;
+    }
+    if(wave_pending)
+    {
+      init_aliens();
+      aliens_alive = MAX_ALIENS;
 
-  draw_player();
-  draw_bullets();
-  draw_aliens();
-  draw_alien_bullets();
-  draw_bunkers();
+      horde_speed = 2;
+
+      wave_pending = false;
+    }
+
+    if(!player_init)
+    { break; }
+
+    ssd1306_clear();
+
+    update_player();
+    handle_firing(is_pressed(BTN_A), ship.x + 1, 52);
+  
+    update_bullets();
+    update_alien_bullets();
+    update_aliens();
+  
+    alien_bullet_collision();
+    bunker_bullet_collision();
+    player_bullet_collision();
+
+    draw_player();
+    draw_bullets();
+    draw_aliens();
+    draw_alien_bullets();
+    draw_bunkers();
     
-  ssd1306_update();
+    ssd1306_update();
+
+    vTaskDelay(pdMS_TO_TICKS(33));
+  }
 }
 
 
