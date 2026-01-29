@@ -9,6 +9,7 @@
 #include "components/font.h"
 #include "components/menu.h"
 #include "components/states.h"
+#include "components/game_reg.h"
 
 // include the games
 #include "components/games/space_invaders/invaders.h"
@@ -26,26 +27,24 @@ void app_main(void)
 
   while(1)
   {
-    switch(current_state)
+    if(current_state == STATE_MENU)
+    { run_menu(); }
+    else
     {
-      case STATE_MENU:
-        run_menu();
-        break;
-      case STATE_GAME_SPACE_INVADERS:
-        run_invaders();
-        break;
-      case STATE_GAME_SNAKE:
-        run_snake();
-        break;
-      case STATE_GAME_TETRIS:
-        run_tetris();
-        break;
-      case STATE_GAME_PACMAN:
-        run_pacman();
-        break;
-      default:
-        current_state = STATE_MENU;
-        break;
+      bool game_found = false;
+
+      for(int i = 0; i < GAME_COUNT; i++)
+      {
+        if(current_state == games_list[i].state)
+        {
+          game_found = true;
+          games_list[i].run();
+          break;
+        }
+      }
+
+      if(!game_found)
+      { current_state = STATE_MENU; }
     }
   }
 }
