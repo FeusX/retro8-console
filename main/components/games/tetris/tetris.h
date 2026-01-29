@@ -174,73 +174,78 @@ static inline void lock_piece()
 
 static void run_tetris(void)
 {
-  uint16_t current_delay = base_delay; 
-  
-  if(!initialized)
-  { reset_game(); last_time = (uint32_t)(xTaskGetTickCount() * portTICK_PERIOD_MS); initialized = true; }
-
-  if(game_over)
+  while(1)
   {
-    initialized = false;
-    vTaskDelay(pdMS_TO_TICKS(500));
-    ssd1306_clear();
+		uint16_t current_delay = base_delay; 
+		
+		if(!initialized)
+		{ reset_game(); last_time = (uint32_t)(xTaskGetTickCount() * portTICK_PERIOD_MS); initialized = true; }
 
-    draw_string(21, 28, "GAME OVER");
-    ssd1306_update();
-    vTaskDelay(pdMS_TO_TICKS(1000));
+		if(game_over)
+		{
+		  initialized = false;
+		  vTaskDelay(pdMS_TO_TICKS(500));
+		  ssd1306_clear();
 
-    current_state = STATE_MENU;
-    
-    return;
-  }
+		  draw_string(21, 28, "GAME OVER");
+		  ssd1306_update();
+		  vTaskDelay(pdMS_TO_TICKS(1000));
 
-  uint32_t now = (xTaskGetTickCount() * portTICK_PERIOD_MS);
+		  current_state = STATE_MENU;
+		  
+		  break;
+		}
 
-  if(is_pressed(BTN_LEFT))
-  {
-    if(!check_collision(current_piece.x - 1, current_piece.y, current_piece.rotation))
-    {
-      current_piece.x--;
-      draw_game();
-      vTaskDelay(pdMS_TO_TICKS(100));
-    }
-  }
+		uint32_t now = (xTaskGetTickCount() * portTICK_PERIOD_MS);
 
-  if(is_pressed(BTN_RIGHT))
-  {
-    if(!check_collision(current_piece.x + 1, current_piece.y, current_piece.rotation))
-    {
-      current_piece.x++;
-      draw_game();
-      vTaskDelay(pdMS_TO_TICKS(100));
-    }
-  }
+		if(is_pressed(BTN_LEFT))
+		{
+		  if(!check_collision(current_piece.x - 1, current_piece.y, current_piece.rotation))
+		  {
+		    current_piece.x--;
+		    draw_game();
+		    vTaskDelay(pdMS_TO_TICKS(100));
+		  }
+		}
 
-  if(is_pressed(BTN_A))
-  {
-    int next_rot = (current_piece.rotation + 1) % 4;
-    if(!check_collision(current_piece.x, current_piece.y, next_rot))
-    {
-      current_piece.rotation = next_rot;
-      draw_game();
-      vTaskDelay(pdMS_TO_TICKS(200));
-    }
-  }
+		if(is_pressed(BTN_RIGHT))
+		{
+		  if(!check_collision(current_piece.x + 1, current_piece.y, current_piece.rotation))
+		  {
+		    current_piece.x++;
+		    draw_game();
+		    vTaskDelay(pdMS_TO_TICKS(100));
+		  }
+		}
 
-  if(is_pressed(BTN_DOWN))
-  {
-    current_delay = 40;
-  }
+		if(is_pressed(BTN_A))
+		{
+		  int next_rot = (current_piece.rotation + 1) % 4;
+		  if(!check_collision(current_piece.x, current_piece.y, next_rot))
+		  {
+		    current_piece.rotation = next_rot;
+		    draw_game();
+		    vTaskDelay(pdMS_TO_TICKS(200));
+		  }
+		}
 
-  if(now - last_time > current_delay)
-  {
-    if(!check_collision(current_piece.x, current_piece.y + 1, current_piece.rotation))
-    { current_piece.y++; }
-    else { lock_piece(); }
+		if(is_pressed(BTN_DOWN))
+		{
+		  current_delay = 40;
+		}
 
-    draw_game();
-    last_time = now;
-  }
+		if(now - last_time > current_delay)
+		{
+		  if(!check_collision(current_piece.x, current_piece.y + 1, current_piece.rotation))
+		  { current_piece.y++; }
+		  else { lock_piece(); }
+
+		  draw_game();
+		  last_time = now;
+		}
+
+		vTaskDelay(pdMS_TO_TICKS(33));
+	}
 }
 
 #endif

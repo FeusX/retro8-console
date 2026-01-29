@@ -78,7 +78,7 @@ static inline void run_menu(void)
 
     ssd1306_update();
 
-    vTaskDelay(pdMS_TO_TICKS(33));
+    vTaskDelay(pdMS_TO_TICKS(60));
   }
 }
 
