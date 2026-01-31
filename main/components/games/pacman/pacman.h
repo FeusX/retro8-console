@@ -58,6 +58,15 @@ static inline void collision_detect(ghost_t *all_ghosts)
       current_state = STATE_MENU;
       return;
     }
+    else if(eaten_pellets >= 51)
+    {
+      ssd1306_clear();
+      draw_string(30, 24, "YOU WON");
+      ssd1306_update();
+      vTaskDelay(pdMS_TO_TICKS(1000));
+      current_state = STATE_MENU;
+      return;
+    }
 	}
 }
 
@@ -74,13 +83,14 @@ void run_pacman(void)
     update_pacman(game_map);
     draw_maze(game_map);
     for(int i = 0; i < MAX_GHOSTS; i++)
-    { update_ghosts(&ghosts[i], ghosts); }
+    { update_ghosts(&ghosts[i], ghosts, player_x / TILE_SIZE, player_y / TILE_SIZE); }
     for(int i = 0; i < MAX_GHOSTS; i++)
     { draw_ghost(&ghosts[i], ghost_sprite); }
     collision_detect(ghosts);
     ssd1306_update();
     if(!pacman_initialized)
     { break; }
+
     vTaskDelay(pdMS_TO_TICKS(33));
   }
 }
