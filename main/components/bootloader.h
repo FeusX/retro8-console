@@ -15,7 +15,7 @@ static void retro8_boot(void)
 	ssd1306_clear();
 	draw_string(0, 20, "Initializing SSD1306.");
 	ssd1306_update();
-	vTaskDelay(pdMS_TO_TICKS(2000));
+	vTaskDelay(pdMS_TO_TICKS(1000));
 	ssd1306_clear();
 	draw_string(0, 20, "SSD1306 initialized.");
 	ssd1306_update();
@@ -26,7 +26,7 @@ static void retro8_boot(void)
 	inputs_init();
 	draw_string(0, 20, "Initializing inputs.");
 	ssd1306_update();
-	vTaskDelay(pdMS_TO_TICKS(2000));
+	vTaskDelay(pdMS_TO_TICKS(1000));
 	ssd1306_clear();
 	draw_string(0, 20, "Inputs initialized.");
 	ssd1306_update();
@@ -42,7 +42,7 @@ static void retro8_boot(void)
 	draw_string(0, 48, "o888o o888 bo8");
 	draw_string(0, 56, "BY FEUSX");
 	ssd1306_update();
-	vTaskDelay(pdMS_TO_TICKS(3000));
+	vTaskDelay(pdMS_TO_TICKS(2000));
 }
 
 #endif
