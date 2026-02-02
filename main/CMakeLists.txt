@@ -1,5 +1,5 @@
 idf_component_register(SRCS "main.c" 
-    INCLUDE_DIRS "." "./components" "./components/games" "./components/games/space_invaders" 
+    INCLUDE_DIRS "." "./components" "./components/games" 
     REQUIRES 
         bootloader_support 
         esp_driver_i2c 
