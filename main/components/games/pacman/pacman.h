@@ -60,6 +60,7 @@ static inline void collision_detect(ghost_t *all_ghosts)
     }
     else if(eaten_pellets >= 51)
     {
+      pacman_initialized = false;
       ssd1306_clear();
       draw_string(30, 24, "YOU WON");
       ssd1306_update();

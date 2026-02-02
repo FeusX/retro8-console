@@ -43,7 +43,7 @@ static inline void update_ghosts(ghost_t *current_ghost, ghost_t *all_ghosts, in
 {
   current_ghost->tick++;
   
-  if(current_ghost->tick < 25) return; 
+  if(current_ghost->tick < 50) return; 
   current_ghost->tick = 0;
   
   int8_t directions[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
@@ -70,7 +70,7 @@ static inline void update_ghosts(ghost_t *current_ghost, ghost_t *all_ghosts, in
 
   if(best_dir_index != -1)
   {
-    if((esp_random() % 5) > 0)
+    if((esp_random() % 2) > 0) // 50% normal move 50% random move 
     {
       current_ghost->x += directions[best_dir_index][0];
       current_ghost->y += directions[best_dir_index][1];
