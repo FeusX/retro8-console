@@ -16,8 +16,6 @@
 
 <h2>THERE IS SOME VIDEOS OF EXISTING GAMES</h2>
 
-<p>Tetris game isn't present right now.</p>
-
 [Invaders (https://youtu.be/0rY3W1rB7OQ)] <br>
 [Snake (https://youtu.be/Yr9xfbP7oNM)] <br>
 [Tetris (https://youtu.be/eirBag55EPA) ] <br>
