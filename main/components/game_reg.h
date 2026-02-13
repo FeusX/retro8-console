@@ -5,7 +5,6 @@
 #include "games/snake/snake.h"
 #include "games/tetris/tetris.h"
 #include "games/pacman/pacman.h"
-#include "games/dunger/dungeon_explorer.h"
 
 typedef void (*game_loop)(void);
 typedef struct {
