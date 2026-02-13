@@ -16,7 +16,6 @@
 #include "components/games/snake/snake.h"
 #include "components/games/tetris/tetris.h"
 #include "components/games/pacman/pacman.h"
-#include "components/games/dunger/dungeon_explorer.h"
 
 system_state_t current_state = STATE_MENU;
 
