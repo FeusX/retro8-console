@@ -5,7 +5,6 @@
 #include "games/snake/snake.h"
 #include "games/tetris/tetris.h"
 #include "games/pacman/pacman.h"
-#include "games/dunger/dungeon_explorer.h"
 
 typedef void (*game_loop)(void);
 typedef struct {
@@ -17,8 +16,7 @@ static const game_reg_t games_list[] = {
     { STATE_GAME_SPACE_INVADERS,     run_invaders },
     { STATE_GAME_SNAKE,              run_snake    },
     { STATE_GAME_TETRIS,             run_tetris   },
-    { STATE_GAME_PACMAN,             run_pacman   },
-    { STATE_GAME_DUNGEON_EXPLORER,   run_dungeon_explorer }
+    { STATE_GAME_PACMAN,             run_pacman   }
 };
 
 #endif
