@@ -1,11 +1,13 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef ASTEROID_PLAYER_H
+#define ASTEROID_PLAYER_H
 
-#include "../../ssd1306.h"
+#include <stdint.h>
 
-static inline void render_player(void)
-{
-  
-}
+typedef struct {
+  int16_t x;
+  int16_t y;
+  uint8_t angle;
+  uint8_t hp;
+} asteroid_player_t;
 
 #endif

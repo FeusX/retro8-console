@@ -71,7 +71,7 @@ static inline void collision_detect(ghost_t *all_ghosts)
 	}
 }
 
-void run_pacman(void)
+static void run_pacman(void)
 {
   if(!pacman_initialized)
   {
