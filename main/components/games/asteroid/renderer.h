@@ -52,7 +52,7 @@ static inline void render_bresenham(int16_t x0, int16_t y0, int16_t x1, int16_t 
   }
 }
 
-static inline void render_triangle(int16_t x0, int16_t y0,
+static inline void ast_render_triangle(int16_t x0, int16_t y0,
                                  int16_t x1, int16_t y1,
                                  int16_t x2, int16_t y2)
 {
@@ -61,7 +61,7 @@ static inline void render_triangle(int16_t x0, int16_t y0,
   render_bresenham(x2, y2, x0, y0);
 }
 
-static inline void render_circle(int16_t circle_x, int16_t circle_y, int16_t radius)
+static inline void ast_render_circle(int16_t circle_x, int16_t circle_y, int16_t radius)
 {
   int16_t x = radius;
   int16_t y = 0;
@@ -87,7 +87,7 @@ static inline void render_circle(int16_t circle_x, int16_t circle_y, int16_t rad
   }
 }
 
-static inline void render_player(int16_t ship_x, int16_t ship_y, uint8_t angle)
+static inline void ast_render_player(int16_t ship_x, int16_t ship_y, uint8_t angle)
 {
   int16_t rot_x0 = ship_x + ((5 * COS(angle)) >> 8);
   int16_t rot_y0 = ship_y + ((5 * SIN(angle)) >> 8);
@@ -98,7 +98,7 @@ static inline void render_player(int16_t ship_x, int16_t ship_y, uint8_t angle)
   int16_t rot_x2 = ship_x + ((-4 * COS(angle) - 3 * SIN(angle)) >> 8);
   int16_t rot_y2 = ship_y + ((-4 * SIN(angle) + 3 * COS(angle)) >> 8);
 
-  render_triangle(rot_x0, rot_y0, rot_x1, rot_y1, rot_x2, rot_y2);
+  ast_render_triangle(rot_x0, rot_y0, rot_x1, rot_y1, rot_x2, rot_y2);
 }
 
 #endif

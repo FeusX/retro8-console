@@ -4,14 +4,9 @@
 #include "renderer.h"
 #include "player.h"
 
-static asteroid_player_t player;
-
 static inline void run_asteroid(void)
 {
-  player.x = 64;
-  player.y = 32;
-  player.angle = 0;
-  player.hp = 3;
+  ast_init_player();
 
   while(1)
   {
@@ -19,7 +14,9 @@ static inline void run_asteroid(void)
 
     player.angle += 3;
 
-    render_player(player.x, player.y, player.angle);
+    ast_render_player(player.x, player.y, player.angle);
+
+    ast_render_circle(5, 7, 3);
 
     ssd1306_update();
     vTaskDelay(pdMS_TO_TICKS(33));

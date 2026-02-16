@@ -29,18 +29,18 @@ static player_bunker_t player_bunker[3] = {
   {90, 5, true}
 };
 
-static void update_player()
+static inline void update_player()
 {
   if(is_pressed(BTN_LEFT) && ship.x > 0) ship.x -= 2.0f;
   if(is_pressed(BTN_RIGHT) && ship.x < 112) ship.x += 2.0f;
 }
 
-static void draw_player()
+static inline void draw_player()
 {
   draw_sprite_h(ship.x, 52, 8, 4, player_ship);
 }
 
-static void bunker_bullet_collision(void)
+static inline void bunker_bullet_collision(void)
 {
   for(int i = 0; i < MAX_ALIEN_BULLETS; i++)
   {
@@ -73,7 +73,7 @@ static void bunker_bullet_collision(void)
   }
 }
 
-static void draw_bunkers(void)
+static inline void draw_bunkers(void)
 {
   for(int i = 0; i < 3; i++)
   {
@@ -83,7 +83,7 @@ static void draw_bunkers(void)
   }
 }
 
-static void player_bullet_collision(void)
+static inline void player_bullet_collision(void)
 {
   for(int i = 0; i < MAX_ALIEN_BULLETS; i++)
   {
