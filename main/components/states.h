@@ -6,7 +6,8 @@ typedef enum {
   STATE_GAME_SPACE_INVADERS,
   STATE_GAME_SNAKE,
   STATE_GAME_TETRIS,
-  STATE_GAME_PACMAN
+  STATE_GAME_PACMAN,
+  STATE_GAME_ASTEROID
 } system_state_t;
 
 extern system_state_t current_state;
