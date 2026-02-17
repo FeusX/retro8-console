@@ -8,9 +8,7 @@
 #define BTN_LEFT 13
 #define BTN_RIGHT 14
 #define BTN_A 16
-#define BTN_B 17
-
-// BTN_B is just in case if i need one more button so id doesn't really have a real usage right now
+#define BTN_B 18
 
 static inline void inputs_init()
 {
