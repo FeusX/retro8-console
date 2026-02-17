@@ -87,18 +87,4 @@ static inline void ast_render_circle(int16_t circle_x, int16_t circle_y, int16_t
   }
 }
 
-static inline void ast_render_player(int16_t ship_x, int16_t ship_y, uint8_t angle)
-{
-  int16_t rot_x0 = ship_x + ((5 * COS(angle)) >> 8);
-  int16_t rot_y0 = ship_y + ((5 * SIN(angle)) >> 8);
-
-  int16_t rot_x1 = ship_x + ((-4 * COS(angle) - -3 * SIN(angle)) >> 8);
-  int16_t rot_y1 = ship_y + ((-4 * SIN(angle) + -3 * COS(angle)) >> 8);
-
-  int16_t rot_x2 = ship_x + ((-4 * COS(angle) - 3 * SIN(angle)) >> 8);
-  int16_t rot_y2 = ship_y + ((-4 * SIN(angle) + 3 * COS(angle)) >> 8);
-
-  ast_render_triangle(rot_x0, rot_y0, rot_x1, rot_y1, rot_x2, rot_y2);
-}
-
 #endif
