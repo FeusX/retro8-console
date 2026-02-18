@@ -4,6 +4,9 @@
 #include "driver/i2c_master.h"
 #include "esp_log.h"
 
+#define SCREEN_W 128
+#define SCREEN_H 64
+
 #define CLAMP(x, low, high) (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
 #define I2C_PORT            0

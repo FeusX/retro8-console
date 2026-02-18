@@ -43,7 +43,7 @@ static inline void ast_update_player(void)
   if(is_pressed(BTN_LEFT)) player.angle -= 6;
   if(is_pressed(BTN_RIGHT)) player.angle += 6;
 
-  if(is_pressed(BTN_A))
+  if(is_pressed(BTN_B))
   { player.vx += (COS(player.angle) >> 5); player.vy += (SIN(player.angle) >> 5); } // calculate the velocity depending on
                                                                                     // player's axis components
                                                                                     // SIN is vertical, COS is horizontal
@@ -53,10 +53,10 @@ static inline void ast_update_player(void)
   player.x = CLAMP(player.x, 8, 120);
   player.y = CLAMP(player.y, 5, 59);
 
-  player.vx = CLAMP(player.vx, -30, 30);
-  player.vy = CLAMP(player.vy, -30, 30);
+  player.vx = CLAMP(player.vx, -20, 20);
+  player.vy = CLAMP(player.vy, -20, 20);
 
-  if(!is_pressed(BTN_A))
+  if(!is_pressed(BTN_B))
   {
     if(player.vx > 0) player.vx--;
     else if(player.vx < 0) player.vx++;
