@@ -29,7 +29,7 @@ static inline void ast_collision_detect()
       draw_string(30, 24, "TEST");
       ssd1306_update();
 
-      vTaskDelay(pdMS_TO_TICKS(50));
+      vTaskDelay(pdMS_TO_TICKS(25));
     }
   }
 }
@@ -50,6 +50,7 @@ static inline void run_asteroid(void)
     update_asteroids();
     ast_update_player();
 
+    ast_check_bullet_collision();
     ast_collision_detect();
 
     ast_render_bullets();
