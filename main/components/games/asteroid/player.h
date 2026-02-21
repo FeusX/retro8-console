@@ -1,12 +1,12 @@
 #ifndef ASTEROID_PLAYER_H
 #define ASTEROID_PLAYER_H
 
+#define AST_MAX_BULLETS 5
+
 #include <stdint.h>
 
 #include "../../ssd1306.h"
 #include "../../input.h"
-
-#include "renderer.h"
 
 typedef struct {
   int16_t x, y, vx, vy;

@@ -7,6 +7,7 @@
 #include "renderer.h"
 #include "player.h"
 #include "balls.h"
+#include "ast_bullet.h"
 
 static inline void ast_collision_detect()
 {
@@ -44,15 +45,17 @@ static inline void run_asteroid(void)
   {
     ssd1306_clear();
 
+    ast_handle_shooting();
+    ast_update_bullets();
     update_asteroids();
     ast_update_player();
 
     ast_collision_detect();
 
+    ast_render_bullets();
     render_asteroids();
-    
     ast_render_player(player.x, player.y, player.angle);
-    
+  
     ssd1306_update();
 
     vTaskDelay(pdMS_TO_TICKS(33));
