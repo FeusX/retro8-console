@@ -79,7 +79,7 @@ static inline void run_asteroid(void)
     for(int i = 0; i < MAX_ASTEROIDS; i++)
     { if(!asteroids[i].is_destroyed) active_asteroids++; }
 
-    if(active_asteroids < 5 && esp_random() % 5 < 1) // spawn asteroid by 20% chance  
+    if(active_asteroids < 5 && esp_random() % 10 < 1) // spawn asteroid by 10% chance  
     {
       for(int i = 0; i < MAX_ASTEROIDS; i++)
       {
