@@ -1,7 +1,7 @@
 #ifndef ASTEROIDS_H
 #define ASTEROIDS_H
 
-#define MAX_ASTEROIDS 4
+#define MAX_ASTEROIDS 7
 
 #include <stdlib.h>
 

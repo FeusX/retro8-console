@@ -10,7 +10,8 @@
 
 typedef struct {
   int16_t x, y, vx, vy;
-  uint8_t angle, hp;
+  uint8_t angle;
+  int8_t hp;
 } ast_player_t;
 
 static ast_player_t player;

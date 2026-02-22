@@ -1,15 +1,18 @@
 #ifndef ASTEROID_H
 #define ASTEROID_H
 
+#include <stdio.h>
+
 #include "../../ssd1306.h"
 #include "../../font.h"
+#include "../../states.h"
 
 #include "renderer.h"
 #include "player.h"
 #include "balls.h"
 #include "ast_bullet.h"
 
-static inline void ast_collision_detect()
+static inline bool ast_collision_detect()
 {
   for(int i = 0; i < MAX_ASTEROIDS; i++)
   {
@@ -26,19 +29,36 @@ static inline void ast_collision_detect()
     if((dx * dx) + (dy * dy) < asteroids[i].rad * asteroids[i].rad)
     {
       ssd1306_clear();
-      draw_string(30, 24, "TEST");
+      player.hp--;
+      asteroids[i].is_destroyed = true; // destroy the asteroid upon impact
+      if(player.hp <= 0)
+      {
+        draw_string(30, 24, "GAME OVER");
+        ssd1306_update();
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        return true;
+      }
+      
+      char ast_status[16];
+      sprintf(ast_status, "%d hp left", player.hp);
+      draw_string(30, 24, ast_status);
       ssd1306_update();
 
-      vTaskDelay(pdMS_TO_TICKS(25));
+      vTaskDelay(pdMS_TO_TICKS(500));
     }
   }
+
+  return false;
 }
 
 static inline void run_asteroid(void)
 {
   ast_init_player();
 
-  for(int k = 0; k < MAX_ASTEROIDS; k++)
+  for(int i = 0; i < MAX_ASTEROIDS; i++)
+  { asteroids[i].is_destroyed = true; }
+
+  for(int k = 0; k < MAX_ASTEROIDS - 3; k++)
   { spawn_asteroid(k); }
 
   while(1)
@@ -51,7 +71,22 @@ static inline void run_asteroid(void)
     ast_update_player();
 
     ast_check_bullet_collision();
-    ast_collision_detect();
+    
+    if(ast_collision_detect() == true)
+    { current_state = STATE_MENU; break; }
+
+    int8_t active_asteroids = 0;
+    for(int i = 0; i < MAX_ASTEROIDS; i++)
+    { if(!asteroids[i].is_destroyed) active_asteroids++; }
+
+    if(active_asteroids < 5 && esp_random() % 5 < 1) // spawn asteroid by 20% chance  
+    {
+      for(int i = 0; i < MAX_ASTEROIDS; i++)
+      {
+        if(asteroids[i].is_destroyed)
+        { spawn_asteroid(i); break; }
+      }
+    }
 
     ast_render_bullets();
     render_asteroids();

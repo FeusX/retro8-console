@@ -5,6 +5,9 @@
 
 #include <stdint.h>
 
+#include "esp_system.h"
+#include "esp_random.h"
+
 #include "../../ssd1306.h"
 #include "../../input.h"
 #include "renderer.h"
@@ -74,6 +77,7 @@ static inline void ast_check_bullet_collision(void)
   for(int i = 0; i < AST_MAX_BULLETS; i++)
   {
     if(!ast_bullets[i].is_active) continue;
+
     for(int j = 0; j < MAX_ASTEROIDS; j++)
     {
       if(asteroids[j].is_destroyed) continue;
@@ -87,13 +91,31 @@ static inline void ast_check_bullet_collision(void)
       if((bdx * bdx) + (bdy * bdy) < (asteroids[j].rad * asteroids[j].rad))
       {
         ast_bullets[i].is_active = false; 
-        asteroids[j].is_destroyed = true;
-        
-        ssd1306_clear();
-        draw_string(30, 24, "HIT");
-        ssd1306_update();
 
-        vTaskDelay(pdMS_TO_TICKS(25));
+        if(asteroids[j].rad >= 6)
+        {
+          asteroids[j].rad >>= 1;
+
+          asteroids[j].vx = -asteroids[j].vx + (esp_random() % 10);
+          asteroids[j].vy = -asteroids[j].vy + (esp_random() % 10);
+
+          for(int k = 0; k < MAX_ASTEROIDS; k++)
+          {
+            if(asteroids[k].is_destroyed)
+            {
+              asteroids[k].is_destroyed = false;
+              asteroids[k].x = asteroids[j].x;
+              asteroids[k].y = asteroids[j].y;
+              asteroids[k].rad = asteroids[j].rad;
+              asteroids[k].vx = -asteroids[j].vx; 
+              asteroids[k].vy = -asteroids[j].vy;
+
+              break;
+            }
+          }
+        }
+        else
+        { asteroids[j].is_destroyed = true; }
 
         break;
       }
