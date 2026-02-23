@@ -41,8 +41,8 @@ static inline void ast_render_player(int16_t ship_x, int16_t ship_y, uint8_t ang
 
 static inline void ast_update_player(void)
 {
-  if(is_pressed(BTN_LEFT)) player.angle -= 6;
-  if(is_pressed(BTN_RIGHT)) player.angle += 6;
+  if(is_pressed(BTN_LEFT)) player.angle -= 5;
+  if(is_pressed(BTN_RIGHT)) player.angle += 5;
 
   if(is_pressed(BTN_B))
   { player.vx += (COS(player.angle) >> 5); player.vy += (SIN(player.angle) >> 5); } // calculate the velocity depending on

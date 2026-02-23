@@ -14,6 +14,7 @@
 #include "balls.h"
 
 static int8_t fire_cooldown = 0;
+uint8_t destroyed_asteroids = 0;
 
 typedef struct {
   int16_t x, y;
@@ -115,7 +116,7 @@ static inline void ast_check_bullet_collision(void)
           }
         }
         else
-        { asteroids[j].is_destroyed = true; }
+        { asteroids[j].is_destroyed = true; destroyed_asteroids++; }
 
         break;
       }

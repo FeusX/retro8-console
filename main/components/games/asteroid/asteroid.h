@@ -28,6 +28,7 @@ static inline bool ast_collision_detect()
 
     if((dx * dx) + (dy * dy) < asteroids[i].rad * asteroids[i].rad)
     {
+      char ast_status[16];
       ssd1306_clear();
       player.hp--;
       asteroids[i].is_destroyed = true; // destroy the asteroid upon impact
@@ -36,11 +37,18 @@ static inline bool ast_collision_detect()
         draw_string(30, 24, "GAME OVER");
         ssd1306_update();
         vTaskDelay(pdMS_TO_TICKS(1000));
+
+        ssd1306_clear();
+        sprintf(ast_status, "%d ASTEROIDS", destroyed_asteroids);
+        draw_string(20, 24, ast_status);
+        draw_string(25, 33, "DESTROYED");
+        ssd1306_update();
+        vTaskDelay(pdMS_TO_TICKS(1000));
+
         return true;
       }
       
-      char ast_status[16];
-      sprintf(ast_status, "%d hp left", player.hp);
+      sprintf(ast_status, "%d HP LEFT", player.hp);
       draw_string(30, 24, ast_status);
       ssd1306_update();
 
@@ -54,6 +62,8 @@ static inline bool ast_collision_detect()
 static inline void run_asteroid(void)
 {
   ast_init_player();
+
+  destroyed_asteroids = 0;
 
   for(int i = 0; i < MAX_ASTEROIDS; i++)
   { asteroids[i].is_destroyed = true; }
@@ -79,7 +89,7 @@ static inline void run_asteroid(void)
     for(int i = 0; i < MAX_ASTEROIDS; i++)
     { if(!asteroids[i].is_destroyed) active_asteroids++; }
 
-    if(active_asteroids < 5 && esp_random() % 10 < 1) // spawn asteroid by 10% chance  
+    if(active_asteroids < 5 && esp_random() % 50 < 1) // spawn asteroid by 2% chance per frame
     {
       for(int i = 0; i < MAX_ASTEROIDS; i++)
       {

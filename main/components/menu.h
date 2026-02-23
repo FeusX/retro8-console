@@ -15,7 +15,7 @@ static const game_entry_t games[] = {
     {"SNAKE",    STATE_GAME_SNAKE},
     {"TETRIS",   STATE_GAME_TETRIS},
     {"PACMAN",   STATE_GAME_PACMAN},
-    {"ASTEROID", STATE_GAME_ASTEROID}
+    {"ASTEROIDS", STATE_GAME_ASTEROID}
 };
 
 #define GAME_COUNT (sizeof(games) / sizeof(game_entry_t))
